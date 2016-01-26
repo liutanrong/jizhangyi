@@ -1,0 +1,12 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_home" type="drawable">@drawable/iconfont_home</item>
+    <item name="ic_menu_sync" type="drawable">@drawable/iconfont_sync</item>
+    <item name="ic_menu_all" type="drawable">@drawable/iconfont_zonglan</item>
+    <item name="ic_menu_search" type="drawable">@drawable/iconfont_sousuo</item>
+    <item name="ic_menu_analysis" type="drawable">@drawable/iconfont_fenxi</item>
+
+    <item name="ic_menu_idea" type="drawable">@drawable/iconfont_yijianfankui</item>
+    <item name="ic_menu_aboutUs" type="drawable">@drawable/iconfont_guanyuwomen</item>
+    <item name="ic_menu_forUpdate" type="drawable">@drawable/iconfont_jianchagengxin</item>
+    <item name="ic_menu_setting" type="drawable">@drawable/iconfont_wrench</item>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_menu_home"
+        android:title="@string/menu_home" />
+        <item
+            android:id="@+id/menu_sync"
+            android:icon="@drawable/ic_menu_sync"
+            android:title="@string/menu_sync" />
+        <item
+            android:id="@+id/menu_all_bill"
+            android:icon="@drawable/ic_menu_all"
+            android:title="账单总览" />
+        <item
+            android:id="@+id/menu_search"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/menu_search" />
+        <item
+            android:id="@+id/menu_analysis"
+            android:icon="@drawable/ic_menu_analysis"
+            android:title="@string/menu_analysis" />
+    </group>
+
+    <item android:title="@string/menu_group_name">
+        <menu>
+            <item
+                android:id="@+id/menu_give_idea"
+                android:title="@string/menu_give_idea" />
+            <item
+                android:id="@+id/menu_about_us"
+                android:title="@string/menu_about_us" />
+            <item
+                android:id="@+id/menu_checkForUpdate"
+                android:title="@string/menu_checkForUpdate" />
+            <item
+                android:id="@+id/menu_setting"
+                android:title="@string/menu_setting" />
+        </menu>
+    </item>
+
+</menu>

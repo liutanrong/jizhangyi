@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/activity_title"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="350px"
+                android:scaleType="fitXY"
+                android:src="@drawable/login_background" />
+            <EditText
+                android:id="@+id/register_user_name"
+                android:hint="请输入邮箱"
+                android:layout_marginTop="20px"
+                android:drawableLeft="@drawable/iconfont_yonghuming32"
+                android:layout_marginRight="50px"
+                android:layout_marginLeft="50px"
+                android:layout_width="match_parent"
+                android:layout_height="80px" />
+            <EditText
+                android:id="@+id/register_password"
+                android:hint="请输入密码"
+                android:password="true"
+                android:drawableLeft="@drawable/iconfont_mima32"
+                android:layout_marginRight="50px"
+                android:layout_marginLeft="50px"
+                android:layout_width="match_parent"
+                android:layout_height="80px" />
+            <EditText
+                android:id="@+id/register_password_t"
+                android:hint="请再次输入密码"
+                android:password="true"
+                android:drawableLeft="@drawable/iconfont_mima32"
+                android:layout_marginRight="50px"
+                android:layout_marginLeft="50px"
+                android:layout_width="match_parent"
+                android:layout_height="80px" />
+            <Button
+                android:id="@+id/register"
+                android:text="注册"
+                android:layout_marginTop="50px"
+                android:layout_marginLeft="50px"
+                android:layout_marginRight="50px"
+                android:textColor="@drawable/selector_btn_text"
+                android:background="@drawable/selector_btn_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

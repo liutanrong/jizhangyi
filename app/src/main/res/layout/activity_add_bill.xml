@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <include layout="@layout/activity_title"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/add_bill_type"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="90px">
+        <RadioButton
+            android:id="@+id/add_bill_money_out"
+            android:text="@string/MoneyOut"
+            android:layout_weight="1"
+            android:checked="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/border"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <RadioButton
+            android:id="@+id/add_bill_money_in"
+            android:text="@string/MoneyIn"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/border"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RadioGroup>
+    <LinearLayout
+        android:background="@drawable/border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/add_bill_money"
+            android:hint="@string/addBillMoneyHint"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90px">
+        <LinearLayout
+            android:id="@+id/add_bill_date_lin"
+            android:layout_weight="1"
+            android:onClick="click"
+            android:background="@drawable/border"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/iconfont_riqi"
+                android:layout_weight="1"
+                android:padding="10px"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/add_bill_date"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/add_bill_tag_lin"
+            android:layout_weight="1"
+            android:onClick="click"
+            android:background="@drawable/border"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/add_bill_tag_pic"
+                android:src="@drawable/tag_none"
+                android:layout_weight="1"
+                android:padding="10px"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/add_bill_tag"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:background="@drawable/border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/add_bill_remark"
+            android:hint="@string/addBillRemarkHint"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/add_bill_confirm"
+        android:onClick="click"
+        android:text="@string/addBillConfirm"
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:textColor="@drawable/selector_btn_text"
+        android:background="@drawable/selector_btn_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

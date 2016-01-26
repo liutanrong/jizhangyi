@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/activity_title"/>
+    <Button
+        android:id="@+id/account_logOut"
+        android:text="退出登陆"
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:textColor="@drawable/selector_btn_text"
+        android:background="@drawable/selector_btn_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
