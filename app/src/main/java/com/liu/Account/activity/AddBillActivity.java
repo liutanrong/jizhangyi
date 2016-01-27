@@ -252,6 +252,6 @@ public class AddBillActivity extends AutoLayoutActivity {
         db.insert(Constants.tableName, cv);
         //// TODO: 16-1-25 添加账单 统计数据
         this.startActivity(new Intent(context,MainActivity.class));
-        finish();
+        AddBillActivity.this.finish();
     }
 }

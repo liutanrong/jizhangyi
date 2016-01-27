@@ -1,10 +1,15 @@
 package com.liu.Account.initUtils;
 
 import android.content.Context;
+import android.os.Environment;
 import android.telephony.TelephonyManager;
 
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.AppUtil;
+import com.liu.Account.commonUtils.LogUtil;
+import com.liu.Account.commonUtils.ToastUtil;
+
+import java.io.File;
 
 import cn.bmob.v3.Bmob;
 
@@ -33,5 +38,20 @@ public class Init {
     public static void DbName(Context context){
         Constants.DBNAME= AppUtil.getDeviceIMEI(context);
 
+    }
+
+    public static void savePath() {
+        if(android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED)){
+            File dir = new File(Environment.getExternalStorageDirectory(),
+                    Constants.FileName == null ? "test" : Constants.FileName);
+            if (!dir.exists())
+                dir.mkdir();
+            Constants.AppSavePath=dir.getPath();
+            LogUtil.i("储存文件夹"+Constants.AppSavePath);
+        }else
+        {
+            LogUtil.i("储存不可用");
+        }
     }
 }

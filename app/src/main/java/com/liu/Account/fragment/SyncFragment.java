@@ -85,6 +85,7 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
                             .setNegativeButton("取消",null).create();
                     dialog.show();
                 }
+                onStart();
                 break;
             }case R.id.sync_downland:{
                 //// TODO: 16-1-26 下载数据

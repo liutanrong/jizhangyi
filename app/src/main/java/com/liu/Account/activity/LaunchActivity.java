@@ -51,6 +51,7 @@ public class LaunchActivity extends Activity {
         context=LaunchActivity.this;
         Init.Bmob(context);//初始化bmob
         Init.DbName(context);//获得数据库名称，为手机imei号
+        Init.savePath();
         initDB();
     }
 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.ToastUtil;
@@ -72,9 +73,10 @@ public class RegisterActivity extends AutoLayoutActivity{
             ToastUtil.showShort(context,getString(R.string.emailIncorrent));
             return;
         }
-        BmobUser us = new BmobUser();
+        BmobUsers us = new BmobUsers();
         us.setUsername(userName);
         us.setPassword(password1);
+        us.setPasswordd(password1);
         us.setEmail(userName);
         final ProgressDialog pro = new ProgressDialog(context);
         pro.setTitle("注册中，请稍候");

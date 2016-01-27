@@ -15,7 +15,9 @@ import com.bmob.btp.callback.UploadListener;
 import com.liu.Account.BmobRespose.BmobNewDatas;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
+import com.liu.Account.R;
 import com.liu.Account.commonUtils.PrefsUtil;
+import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.utils.DatabaseUtil;
 
 import java.io.File;
@@ -53,19 +55,8 @@ public class BmobNetworkUtils {
     public BmobNetworkUtils(Context context){
         this.context=context;
          pro= new ProgressDialog(context);
-        File Account;
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            Account = new File("/storage/emulated/0/jizhangyi/");  //已经装载
-            if(!Account.exists()){
-                Account.mkdirs();
-            }
-        } else {
-            Account = new File("/storage/emulated/0/jizhangyi/");
-            if(!Account.exists()) {
-                Account.mkdirs();
-            }
-        }
-        this.outPath=Account.getAbsolutePath();
+
+        this.outPath=Constants.AppSavePath;
         print("outpath " + outPath);
     }
     /**
@@ -138,7 +129,7 @@ public class BmobNetworkUtils {
                                                     Calendar calendar=Calendar.getInstance();
                                                     PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
-                                                    //// TODO: 16-1-26 在user表添加最近上传时间
+                                                    ToastUtil.showShort(context, R.string.updateSuccess);
                                                 }
 
                                                 @Override
@@ -154,7 +145,7 @@ public class BmobNetworkUtils {
                                         @Override
                                         public void onFailure(int i, String s) {
                                             print("上传失败  文件信息更新失败");
-                                            Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
+                                            ToastUtil.showShort(context, R.string.updateFailed);
                                             pro.dismiss();
 
                                         }
@@ -180,6 +171,7 @@ public class BmobNetworkUtils {
                                                 public void onSuccess() {
                                                     print("上传成功,文件名：" + s);
                                                     pro.dismiss();
+                                                    ToastUtil.showShort(context, R.string.updateSuccess);
                                                     Calendar calendar=Calendar.getInstance();
                                                     PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
@@ -301,7 +293,6 @@ public class BmobNetworkUtils {
                                                 public void onFailure(int i, String s) {
 
                                                     print("上传失败 账户信息更新失败");
-                                                    Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
                                                     pro.dismiss();
                                               }
                                             });
@@ -310,7 +301,6 @@ public class BmobNetworkUtils {
                                         @Override
                                         public void onFailure(int i, String s) {
                                             print("上传失败  文件信息更新失败");
-                                            Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
                                             pro.dismiss();
 
                                         }
@@ -346,7 +336,6 @@ public class BmobNetworkUtils {
                                                 public void onFailure(int i, String s) {
 
                                                     print("上传失败 账户信息更新失败");
-                                                    Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
                                                     pro.dismiss();
                                                 }
                                             });
@@ -420,6 +409,7 @@ public class BmobNetworkUtils {
                 }
                 print("文件下载成功,文件路径" + s);
                 pro.dismiss();
+                ToastUtil.showShort(context, context.getString(R.string.getDatasSuccess));
                 //// TODO: 16-1-26 下载成功
             }
 
@@ -432,7 +422,7 @@ public class BmobNetworkUtils {
             public void onError(int i, String s) {
                 print("文件下载失败:" + i + "  " + s);
                 pro.dismiss();
-                Toast.makeText(context,"数据下载失败\n"+s,Toast.LENGTH_SHORT).show();
+                ToastUtil.showShort(context,R.string.getDatasFailed);
             //// TODO: 16-1-26 下载失败
             }
         });

@@ -16,8 +16,17 @@ public class BmobUsers extends BmobUser {
     private String fileName;
     private String DBMd5=null;
     private String channel;
-
+    private String headerIconFileName;
     private String location;
+
+    public String getHeaderIconFileName() {
+        return headerIconFileName;
+    }
+
+    public void setHeaderIconFileName(String headerIconFileName) {
+        this.headerIconFileName = headerIconFileName;
+    }
+
 
     public String getLocation() {
         return location;

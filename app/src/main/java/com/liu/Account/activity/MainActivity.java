@@ -1,9 +1,11 @@
 package com.liu.Account.activity;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
@@ -19,12 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bmob.BmobProFile;
+import com.bmob.btp.callback.DownloadListener;
+import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.fragment.FragmentFactory;
 import com.liu.Account.initUtils.DeviceInformation;
 import com.liu.Account.initUtils.StatusBarUtil;
 import com.liu.Account.initUtils.Init;
+import com.liu.Account.utils.BitmapUtil;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.Timer;
@@ -41,6 +47,11 @@ public class MainActivity extends AutoLayoutActivity
     private int position=1;
 
     private View headerView;
+
+    private ImageView headerIcon;
+    private TextView headerText;
+
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +59,12 @@ public class MainActivity extends AutoLayoutActivity
         //设置沉浸状态栏
         StatusBarUtil.setTransparentStatusBar(this);
 
+        context=MainActivity.this;
         //初始化toolb左滑菜单ar和
         initToolbarAndNavigation();
 
-        initView();
 
+        initView();
         //将默认页面设为添加账单页
         replaceFragment(FragmentFactory.HOME);
         getSupportActionBar().setTitle(R.string.menu_home);
@@ -77,11 +89,62 @@ public class MainActivity extends AutoLayoutActivity
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        headerIcon.setImageResource(R.drawable.iconfont_yonghu128);
+        headerText.setText("");
+
+        BmobUsers bmobUsers=BmobUser.getCurrentUser(context,BmobUsers.class);
+        if (bmobUsers!=null)
+            setNameAndPic();
+
+    }
+    private void setNameAndPic() {
+        BmobUsers users=BmobUser.getCurrentUser(context,BmobUsers.class);
+        String fileName=null;
+        try{
+            fileName=users.getHeaderIconFileName();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (fileName==null)
+            return;
+        BmobProFile.getInstance(context).download(users.getHeaderIconFileName(),
+                new DownloadListener() {
+                    @Override
+                    public void onSuccess(String s) {
+                        Bitmap bitmap = BitmapUtil.getBitmapFromFile(s);
+                        if (bitmap != null)
+                            headerIcon.setImageBitmap(bitmap);
+                        BmobUsers userss=BmobUser.getCurrentUser(context,BmobUsers.class);
+                        String temp=null;
+                        try {
+                            temp=userss.getNickName();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        if (temp!=null)
+                            headerText.setText(userss.getNickName());
+                    }
+
+                    @Override
+                    public void onProgress(String s, int i) {
+
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        LogUtil.i("头像下载失败");
+                    }
+                });
+    }
+
     private void initView() {
-        
         //// TODO: 16-1-23 点击用户头像
-        ImageView headerIcon= (ImageView) headerView.findViewById(R.id.userIcon);
-        TextView headerText= (TextView) headerView.findViewById(R.id.userName);
+        headerIcon= (ImageView) headerView.findViewById(R.id.userIcon);
+        headerText= (TextView) headerView.findViewById(R.id.userName);
 
 
 
@@ -202,6 +265,7 @@ public class MainActivity extends AutoLayoutActivity
 //				如果当前界面不是主界面，就先回到主界面
                 position=1;
                 replaceFragment(FragmentFactory.HOME);
+                getSupportActionBar().setTitle(R.string.menu_home);
             }
             else{
                 exitBy2Click(); // 调用双击退出函数
@@ -230,7 +294,8 @@ public class MainActivity extends AutoLayoutActivity
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
         } else {
             finish();
-            System.exit(0);
+            //// TODO: 16-1-27 双击退出
+            //System.exit(0);
         }
     }
 }
