@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/activity_title"/>
-    <Button
-        android:id="@+id/account_logOut"
-        android:text="退出登陆"
-        android:layout_marginTop="50px"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
-        android:textColor="@drawable/selector_btn_text"
-        android:background="@drawable/selector_btn_bg"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="50px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.liu.Account.view.RoundImageView
+                android:id="@+id/account_icon"
+                android:layout_width="256px"
+                android:layout_height="256px"
+                android:layout_gravity="center_horizontal"
+                imagecontrol:border_outside_color="#3F51B5"
+                imagecontrol:border_thickness="2dp"
+
+                android:src="@drawable/iconfont_yonghu128"/>
+            <TextView
+                android:id="@+id/account_email"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginTop="20px"
+                android:layout_marginRight="50px"
+                android:layout_marginLeft="50px"
+                android:layout_width="match_parent"
+                android:layout_height="80px" />
+            <EditText
+                android:id="@+id/account_nickname"
+                android:hint="请输入昵称"
+                android:layout_marginTop="20px"
+                android:drawableLeft="@drawable/iconfont_yonghuming32"
+                android:layout_marginRight="50px"
+                android:layout_marginLeft="50px"
+                android:layout_width="match_parent"
+                android:layout_height="80px" />
+
+            <Button
+                android:id="@+id/account_save"
+                android:text="保存"
+                android:layout_marginTop="50px"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                android:textColor="@drawable/selector_btn_text"
+                android:background="@drawable/selector_btn_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

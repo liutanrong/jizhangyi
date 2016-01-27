@@ -100,7 +100,7 @@
         android:background="@drawable/border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
+        <com.liu.Account.view.emojicon.EmojiconEditText
             android:id="@+id/add_bill_remark"
             android:hint="@string/addBillRemarkHint"
             android:paddingLeft="10dp"

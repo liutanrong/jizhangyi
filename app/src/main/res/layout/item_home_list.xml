@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <TextView
+            <com.liu.Account.view.emojicon.EmojiconTextView
                 android:id="@+id/remarkInList"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -68,7 +68,6 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/money_type"
-            android:text="+"
             android:textSize="30sp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="center_vertical|center_horizontal"

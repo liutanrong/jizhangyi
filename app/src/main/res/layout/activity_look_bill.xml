@@ -39,7 +39,7 @@
                 android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <com.liu.Account.view.emojicon.EmojiconTextView
                 android:textSize="40px"
                 android:id="@+id/lookBillRemark"
                 android:layout_width="wrap_content"
