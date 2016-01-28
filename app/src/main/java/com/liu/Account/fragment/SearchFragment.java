@@ -2,8 +2,10 @@ package com.liu.Account.fragment;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -34,11 +36,14 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.model.SearchData;
 import com.liu.Account.utils.DatabaseUtil;
+import com.squareup.timessquare.CalendarPickerView;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -54,7 +59,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private HomeListViewAdapter adapter;
     private List<HomeListViewData> mDataArrays = new ArrayList<>();
     private TextView accountSize,accountMoney;
-    private Button startTime,endTime;
+    private Button time;
 
     private Spinner mTagType;
     private Spinner mInOrOut;
@@ -83,21 +88,74 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         //数量和金额
         accountMoney= (TextView) view.findViewById(R.id.search_money);
         accountSize= (TextView) view.findViewById(R.id.search_size);
-        startTime= (Button) view.findViewById(R.id.search_startTime);
-        endTime= (Button) view.findViewById(R.id.search_endTime);
-        startTime.setOnClickListener(new View.OnClickListener() {
+        time= (Button) view.findViewById(R.id.search_Time);
+        time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time(startTime);
+
+                final CalendarPickerView dialogView= (CalendarPickerView) activity.getLayoutInflater().inflate(R.layout.dialog_timepick,null,false);
+
+                Calendar start=Calendar.getInstance();
+                start.add(Calendar.YEAR,-100);
+                Calendar end = Calendar.getInstance();
+                end.add(Calendar.YEAR, 1);
+
+                final ArrayList<Date> dates=new ArrayList<Date>();
+                Calendar startTime=Calendar.getInstance();
+                startTime.setTimeInMillis(Long.parseLong(data.getStartTime()));
+
+                Calendar endTime = Calendar.getInstance();
+                endTime.setTimeInMillis(Long.parseLong(data.getEndTime()));
+
+                dates.add(startTime.getTime());
+                dates.add(endTime.getTime());
+
+
+                dialogView.init(start.getTime(),
+                        end.getTime()) //
+                        .inMode(CalendarPickerView.SelectionMode.RANGE)
+                        .withSelectedDates(dates);
+                //
+                AlertDialog theDialog = new AlertDialog.Builder(activity) //
+                        .setTitle("请选取日期范围")
+                        .setView(dialogView)
+                        .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                List<Date> dates1=dialogView.getSelectedDates();
+                                LogUtil.i("获取的日期数" + dates1.size());
+                                long st=dates1.get(0).getTime();
+                                long en=dates1.get(dates1.size()-1).getTime();
+                                Calendar calendar=Calendar.getInstance();
+                                calendar.setTimeInMillis(en);
+                                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                LogUtil.i("startTime:" + st);
+                                LogUtil.i("endTime:" + calendar.getTimeInMillis());
+                                String temp=DateUtil.getStringByFormat(st, DateUtil.dateFormatYMDD)
+                                        +"——"+DateUtil.getStringByFormat(en, DateUtil.dateFormatYMD);
+                                time.setText(temp);
+                                data.setStartTime(String.valueOf(st));
+                                data.setEndTime(String.valueOf(calendar.getTimeInMillis()));
+                                queryString();
+                            }
+                        })
+                        .create();
+                theDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        //Log.d(TAG, "onShow: fix the dimens!");
+                        dialogView.fixDialogDimens();
+                    }
+                });
+                theDialog.show();
+
             }
         });
 
-        endTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                time(endTime);
-            }
-        });
         //几个spinner
         mTagType = (Spinner) view.findViewById(R.id.search_tagType);
         mInOrOut = (Spinner) view.findViewById(R.id.search_inOrOut);
@@ -194,35 +252,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         });
     }
 
-    private void time(final Button Time) {
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthhOfYear,
-                                  int dayOfMonth) {
-                //参数选择结果：年 月 日
-                int monthOfYear = monthhOfYear+1;
-                String YMD= year + "-" + monthOfYear + "-" + dayOfMonth;
-                Time.setText(YMD);
-
-                if (Time.equals(startTime)) {
-                    data.setStartTime(String.valueOf(DateUtil.getMilliseconds(YMD,DateUtil.dateFormatYMD)));
-                    queryString();
-                }else if (Time.equals(endTime)){
-                    data.setEndTime(String.valueOf(DateUtil.getMilliseconds(YMD, DateUtil.dateFormatYMD)));
-                    queryString();
-                }
-
-            }
-        };
-        Calendar calendar=Calendar.getInstance();
-        int yearr = calendar.get(Calendar.YEAR);
-        int monthh = calendar.get(Calendar.MONTH);
-        int dayy = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datee = new DatePickerDialog(activity, date, yearr, monthh, dayy);
-        //显示
-        datee.show();
-    }
 
     @Override
     public void onStart() {
@@ -232,8 +261,10 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         Calendar calendar=Calendar.getInstance();
         data.setStartTime(String.valueOf(DateUtil.getFirstDayOfMonth()));
         data.setEndTime(String.valueOf(calendar.getTimeInMillis()));
-        startTime.setText(DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMD));
-        endTime.setText(DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMD));
+
+        String temp=DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMDD)
+                +"——"+DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMD);
+        time.setText(temp);
         LogUtil.i("startTime" +DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMD) );
         LogUtil.i("endTime"+DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMD));
 

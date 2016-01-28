@@ -30,4 +30,5 @@ dependencies {
     compile 'com.squareup.okio:okio:1.4.0'
     compile 'com.kyleduo.switchbutton:library:1.3.3'
     compile 'me.zhanghai.android.patternlock:library:2.0.1'
+    compile 'com.squareup:android-times-square:1.6.4@aar'
 }

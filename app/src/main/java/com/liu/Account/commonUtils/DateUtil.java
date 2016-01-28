@@ -16,6 +16,7 @@ public class DateUtil {
 
     /** 时间日期格式化到年月日. */
     public static final String dateFormatYMD = "yyyy-MM-dd";
+    public static final String dateFormatYMDD = "yyyy/MM/dd";
 
     /** 时间日期格式化到年月. */
     public static final String dateFormatYM = "yyyy-MM";

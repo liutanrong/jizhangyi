@@ -1,15 +1,14 @@
 package com.liu.Account.activity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +28,7 @@ import com.liu.Account.model.AddBillTagData;
 import com.liu.Account.utils.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
 import com.liu.Account.initUtils.StatusBarUtil;
+import com.squareup.timessquare.CalendarPickerView;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;
@@ -153,30 +153,60 @@ public class AddBillActivity extends AutoLayoutActivity {
         switch (v.getId()){
             case R.id.add_bill_date_lin:{
                 // 点击日期框事件 选择日期
-                DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                final CalendarPickerView dialogView= (CalendarPickerView) getLayoutInflater().inflate(R.layout.dialog_timepick,null,false);
+                Calendar startTime=Calendar.getInstance();
+                startTime.add(Calendar.YEAR,-100);
+                Calendar endTime = Calendar.getInstance();
+                endTime.add(Calendar.YEAR, 1);
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-                        //参数选择结果：年 月 日
-
-                        int monthhhhhhh = monthOfYear + 1;
-                        data.setYear(year);
-                        data.setDayOfMonth(dayOfMonth);
-                        data.setMonth(monthhhhhhh);
-                        data.setIsSelectTime(true);
-                        String temp=year+"/"+monthhhhhhh+"/"+dayOfMonth;
-                        dateText.setText(temp);
-                    }
-                };
-                //日期选择对话框：参数1上下文   参数2：监听器    参数...默认显示日期 实际显示的月份比这里设置的月份数会多1个月
                 Calendar calendar=Calendar.getInstance();
-                int yearr = calendar.get(Calendar.YEAR);
-                int monthh = calendar.get(Calendar.MONTH);
-                int dayy = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datee = new DatePickerDialog(context, date, yearr, monthh, dayy);
-                //显示
-                datee.show();
+                try{
+                    calendar.set(Calendar.YEAR,data.getYear());
+                    calendar.set(Calendar.MONTH,data.getMonth());
+                    calendar.set(Calendar.DAY_OF_MONTH,data.getDayOfMonth());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                calendar.add(Calendar.MONTH,-1);
+                dialogView.init(startTime.getTime(),
+                        endTime.getTime()) //
+                        .inMode(CalendarPickerView.SelectionMode.SINGLE)
+                .withSelectedDate(calendar.getTime());
+                         //
+                AlertDialog theDialog = new AlertDialog.Builder(context) //
+                        .setTitle("请选取日期")
+                        .setView(dialogView)
+                        .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                long sd=dialogView.getSelectedDate().getTime();
+                                String tt=DateUtil.getStringByFormat(sd, DateUtil.dateFormatYMDD);
+                                dateText.setText(tt);
+
+                                Calendar calendar=Calendar.getInstance();
+                                calendar.setTimeInMillis(sd);
+                                calendar.add(Calendar.MONTH, 1);
+                                data.setYear(calendar.get(Calendar.YEAR));
+                                data.setDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
+                                data.setMonth(calendar.get(Calendar.MONTH));
+                                data.setIsSelectTime(true);
+                                //Toast.makeText(getApplicationContext(), sd + "", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .create();
+                theDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        //Log.d(TAG, "onShow: fix the dimens!");
+                        dialogView.fixDialogDimens();
+                    }
+                });
+                theDialog.show();
+
                 break;
             }case R.id.add_bill_tag_lin:{
                 // 16-1-24 点击标签对话框事件 选择标签
