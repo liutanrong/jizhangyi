@@ -5,6 +5,7 @@ import android.content.Context;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.PrefsUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -27,5 +28,18 @@ public class SetPatternLockActivity extends me.zhanghai.android.patternlock.SetP
         BmobUser user= BmobUser.getCurrentUser(SetPatternLockActivity.this);
         d.putString("PatternUserId",user.getObjectId());
         // Save patternSha1 in SharedPreferences.
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SetPatternLockActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("SetPatternLockActivity");
+        MobclickAgent.onPause(this);
     }
 }

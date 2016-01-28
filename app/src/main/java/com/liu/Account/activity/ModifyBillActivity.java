@@ -33,13 +33,18 @@ import com.liu.Account.model.AddBillTagData;
 import com.liu.Account.utils.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
 import com.squareup.timessquare.CalendarPickerView;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import cn.bmob.v3.BmobUser;
 
 /**
  * Created by deonte on 16-1-25.
@@ -327,7 +332,20 @@ public class ModifyBillActivity extends AutoLayoutActivity {
         cv.put(Constants.column[10], data.getDayOfMonth());
         db.update(Constants.tableName, cv,"unixTime=?",new String[]{unixTime});
         ////  16-1-25 在云端修改
-        //// TODO: 16-1-28 修改账单 
+        //// 16-1-28 修改账单
+        Map<String,String> map = new HashMap<String,String>();
+        try{
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"修改账单");
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("type","修改账单");
+        }
+        MobclickAgent.onEventValue(context, "delAccount", map, 0);
+
+
+
         Thread thread=new Thread() {
             @Override
             public void run() {
@@ -339,5 +357,18 @@ public class ModifyBillActivity extends AutoLayoutActivity {
         thread.run();
         this.startActivity(new Intent(context,MainActivity.class));
         finish();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("ModifyBillActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("ModifyBillActivity");
+        MobclickAgent.onPause(this);
     }
 }

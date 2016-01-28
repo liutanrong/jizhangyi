@@ -23,6 +23,7 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.AllBillListGroupData;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -248,4 +249,12 @@ public class AllBillFragment extends Fragment implements ExpandableListView.OnCh
         LogUtil.i(s);
     }
 
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("AllBillFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("AllBillFragment");
+    }
 }

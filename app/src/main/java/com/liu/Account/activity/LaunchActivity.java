@@ -16,6 +16,7 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class LaunchActivity extends ConfirmPatternActivity {
         Init.Bmob(context);//初始化bmob
         Init.DbName(context);//获得数据库名称，为手机imei号
         Init.savePath();
+        Init.Umeng(context);
         initDB();
     }
 
@@ -101,17 +103,7 @@ public class LaunchActivity extends ConfirmPatternActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //MobclickAgent.onResume(this);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //MobclickAgent.onPause(this);
-    }
 /**
     public static String getDeviceInfo(Context context) {
         try{
@@ -145,7 +137,7 @@ public class LaunchActivity extends ConfirmPatternActivity {
 **/
     @Override
     protected boolean isStealthModeEnabled() {
-    // TODO: Return the value from SharedPreferences
+    // Return the value from SharedPreferences
         PrefsUtil d=new PrefsUtil(LaunchActivity.this, Constants.PatternLock,Context.MODE_PRIVATE);
         if (!d.getBoolean("isPatternOn",false)) {
             //不开着屏幕锁
@@ -178,5 +170,18 @@ public class LaunchActivity extends ConfirmPatternActivity {
 
         // Finish with RESULT_FORGOT_PASSWORD.
         super.onForgotPassword();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("LaunchActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("LaunchActivity");
+        MobclickAgent.onPause(this);
     }
 }

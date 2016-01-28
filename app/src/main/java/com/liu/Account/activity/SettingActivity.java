@@ -15,6 +15,7 @@ import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -104,5 +105,17 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
             }
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SettingActivity");
+        MobclickAgent.onResume(this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("SettingActivity");
+        MobclickAgent.onPause(this);
+    }
 }

@@ -35,6 +35,7 @@ import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.utils.BitmapUtil;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -201,6 +202,9 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                                 //将图形密码置为空
                                 PrefsUtil d=new PrefsUtil(context, Constants.PatternLock, Context.MODE_PRIVATE);
                                 d.putBoolean("isPatternOn", false);
+
+                                MobclickAgent.onProfileSignOff();
+
                                 BmobUser.logOut(context);   //清除缓存用户对象
                             }
                         }).setNegativeButton("取消",null)
@@ -377,4 +381,17 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("AccountActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("AccountActivity");
+        MobclickAgent.onPause(this);
+    }
 }

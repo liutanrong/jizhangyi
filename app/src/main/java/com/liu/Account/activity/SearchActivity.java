@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
@@ -33,5 +34,18 @@ public class SearchActivity extends AutoLayoutActivity {
         searchView.requestFocus();
         InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(searchView, 0);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SearchActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("SearchActivity");
+        MobclickAgent.onPause(this);
     }
 }

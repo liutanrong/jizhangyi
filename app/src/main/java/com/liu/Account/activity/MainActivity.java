@@ -1,6 +1,7 @@
 package com.liu.Account.activity;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,10 @@ import com.liu.Account.initUtils.DeviceInformation;
 import com.liu.Account.initUtils.StatusBarUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.BitmapUtil;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.Timer;
@@ -67,10 +72,13 @@ public class MainActivity extends AutoLayoutActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //设置沉浸状态栏
         StatusBarUtil.setTransparentStatusBar(this);
 
         context=MainActivity.this;
+        //初始化更新
+        Init.autoUpdate(context);
         //初始化toolb左滑菜单ar和
         initToolbarAndNavigation();
 
@@ -131,14 +139,14 @@ public class MainActivity extends AutoLayoutActivity
                         Bitmap bitmap = BitmapUtil.getBitmapFromFile(s);
                         if (bitmap != null)
                             headerIcon.setImageBitmap(bitmap);
-                        BmobUsers userss=BmobUser.getCurrentUser(context,BmobUsers.class);
-                        String temp=null;
+                        BmobUsers userss = BmobUser.getCurrentUser(context, BmobUsers.class);
+                        String temp = null;
                         try {
-                            temp=userss.getNickName();
-                        }catch (Exception e){
+                            temp = userss.getNickName();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        if (temp!=null)
+                        if (temp != null)
                             headerText.setText(userss.getNickName());
                     }
 
@@ -231,8 +239,19 @@ public class MainActivity extends AutoLayoutActivity
             ////  16-1-23 关于我们
             startActivity(new Intent(context,AboutUsActivity.class));
         }else if (id==R.id.menu_checkForUpdate){
-            //// TODO: 16-1-23 检查更新
-            ToastUtil.showShort(context,"检查更新");
+            final ProgressDialog pro=new ProgressDialog(context);
+            pro.setTitle("正在检查更新");
+            pro.setMessage("请稍候...");
+            pro.show();
+            UmengUpdateAgent.forceUpdate(context);
+            UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                @Override
+                public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+
+                    pro.dismiss();
+                }
+            });
+
         }else if (id==R.id.menu_setting){
             ////  16-1-23 设置
             startActivity(new Intent(context,SettingActivity.class));
@@ -343,6 +362,19 @@ public class MainActivity extends AutoLayoutActivity
             finish();
             //// TODO: 16-1-27 双击退出
             //System.exit(0);
+            MobclickAgent.onKillProcess(context);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

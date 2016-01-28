@@ -17,6 +17,7 @@ import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -126,5 +127,19 @@ public class RegisterActivity extends AutoLayoutActivity{
         mRegister_password = (EditText) findViewById(R.id.register_password);
         mRegister_password_t = (EditText) findViewById(R.id.register_password_t);
         mRegister = (Button) findViewById(R.id.register);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("RegisterActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("RegisterActivity");
+        MobclickAgent.onPause(this);
     }
 }

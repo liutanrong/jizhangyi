@@ -37,6 +37,7 @@ import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.model.SearchData;
 import com.liu.Account.utils.DatabaseUtil;
 import com.squareup.timessquare.CalendarPickerView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -435,5 +436,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
         mDataArrays.add(data);
     }
-
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SearchFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("SearchFragment");
+    }
 }

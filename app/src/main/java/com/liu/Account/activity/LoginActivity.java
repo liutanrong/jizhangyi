@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -90,6 +91,8 @@ public class LoginActivity extends AutoLayoutActivity{
             public void onSuccess() {
                 //登陆成功
                 pro.dismiss();
+                BmobUser user1=BmobUser.getCurrentUser(context);
+                MobclickAgent.onProfileSignIn(user1.getObjectId());
                 finish();
             }
 
@@ -130,5 +133,18 @@ public class LoginActivity extends AutoLayoutActivity{
         mLogin_password = (EditText) findViewById(R.id.login_password);
         mLogin_login = (Button) findViewById(R.id.login_login);
         mFindPassword= (TextView) findViewById(R.id.findPassword);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("LoginActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("LoginActivity");
+        MobclickAgent.onPause(this);
     }
 }

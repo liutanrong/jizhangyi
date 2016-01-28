@@ -8,6 +8,8 @@ import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import java.io.File;
 
@@ -58,5 +60,16 @@ public class Init {
     public static String  DatabasePath(Context context,String name) {
         File F=context.getDatabasePath(name);
         return F.getPath();
+    }
+
+    public static void autoUpdate(Context context) {
+        UmengUpdateAgent.update(context);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);//非wifi也提醒
+        UmengUpdateAgent.silentUpdate(context);//静默下载更新
+
+    }
+
+    public static void Umeng(Context context) {
+        MobclickAgent.openActivityDurationTrack(false);
     }
 }

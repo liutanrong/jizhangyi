@@ -19,6 +19,7 @@ import com.liu.Account.R;
 import com.liu.Account.activity.LoginActivity;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.BmobNetwork.BmobNetworkUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.bmob.v3.BmobUser;
 
@@ -117,5 +118,13 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
 
             }
         }
+    }
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SyncFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("SyncFragment");
     }
 }

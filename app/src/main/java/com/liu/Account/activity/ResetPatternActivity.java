@@ -15,6 +15,7 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -101,14 +102,14 @@ public class ResetPatternActivity extends AutoLayoutActivity {
                 //登陆成功
                 pro.dismiss();
                 PrefsUtil d = new PrefsUtil(ResetPatternActivity.this, Constants.PatternLock, Context.MODE_PRIVATE);
-                String objid=d.getString("PatternUserId");
-                BmobUser user1=BmobUser.getCurrentUser(context);
+                String objid = d.getString("PatternUserId");
+                BmobUser user1 = BmobUser.getCurrentUser(context);
                 if (user1.getObjectId().equals(objid)) {
                     d.putBoolean("isPatternOn", false);
                     startActivity(new Intent(context, MainActivity.class));
                     finish();
-                }else {
-                    ToastUtil.showShort(context,"验证失败");
+                } else {
+                    ToastUtil.showShort(context, "验证失败");
                 }
 
             }
@@ -117,7 +118,7 @@ public class ResetPatternActivity extends AutoLayoutActivity {
             public void onFailure(int i, String s) {
                 //登陆失败
                 pro.dismiss();
-                ToastUtil.showShort(context,"验证失败\n"+s);
+                ToastUtil.showShort(context, "验证失败\n" + s);
             }
         });
     }
@@ -139,5 +140,18 @@ public class ResetPatternActivity extends AutoLayoutActivity {
         mLogin_password = (EditText) findViewById(R.id.login_password);
         mLogin_login = (Button) findViewById(R.id.login_login);
         mFindPassword= (TextView) findViewById(R.id.findPassword);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("ResetPatternActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("ResetPatternActivity");
+        MobclickAgent.onPause(this);
     }
 }

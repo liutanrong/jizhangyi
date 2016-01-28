@@ -20,7 +20,13 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import cn.bmob.v3.BmobUser;
 
 /**
  * Created by deonte on 16-1-25.
@@ -66,7 +72,17 @@ public class LookBillActivity extends AutoLayoutActivity {
         mLookBillRemark.setText(bundle.getString("remark"));
         mLookBillTag.setText(bundle.getString("tag"));
         mLookBillType.setText(bundle.getString("moneyType"));
-        //// TODO: 16-1-25 查看账单
+        ////  16-1-25 查看账单
+        Map<String,String> map = new HashMap<String,String>();
+        try{
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"查看账单");
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("type","查看账单");
+        }
+        MobclickAgent.onEventValue(context, "showAccount", map, 0);
     }
 /**
  *  bundle.putString("money",money);
@@ -99,7 +115,19 @@ public class LookBillActivity extends AutoLayoutActivity {
     }
 
     private void deleteData() {
-        ////TODO  16-1-25 删除账单
+        ////16-1-25 删除账单
+        Map<String,String> map = new HashMap<String,String>();
+        try{
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"删除账单");
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("type","删除账单");
+        }
+        MobclickAgent.onEventValue(context, "delAccount", map, 0);
+
+
         Dialog dialog =new AlertDialog.Builder(context)
                 .setTitle(R.string.deleteBillTitle)
                 .setMessage(R.string.deleteBillMessage)
@@ -150,5 +178,18 @@ public class LookBillActivity extends AutoLayoutActivity {
                 finish();
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("LookBillActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("LookBillActivity");
+        MobclickAgent.onPause(this);
     }
 }

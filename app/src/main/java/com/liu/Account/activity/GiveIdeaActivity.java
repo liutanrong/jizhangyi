@@ -15,6 +15,7 @@ import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -105,5 +106,18 @@ public class GiveIdeaActivity extends AutoLayoutActivity implements View.OnClick
                 Toast.makeText(context,"上传服务器失败,请稍后再试",Toast.LENGTH_LONG).show();
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("GiveIdeaActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("GiveIdeaActivity");
+        MobclickAgent.onPause(this);
     }
 }

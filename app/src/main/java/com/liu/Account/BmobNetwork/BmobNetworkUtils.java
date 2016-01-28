@@ -21,6 +21,7 @@ import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,11 +72,15 @@ public class BmobNetworkUtils {
     public void upDatesToBmobWithDialog(final Context context) {
         Map<String,String> map = new HashMap<String,String>();
         try{
-            BmobUser user= BmobUser.getCurrentUser(context);
-            map.put("email",user.getEmail());
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"手动上传数据");
         }catch (Exception e){
             e.printStackTrace();
+            map.put("type","手动上传数据");
         }
+        MobclickAgent.onEventValue(context, "UpDatas", map, 0);
+
         pro.setTitle("正在上传");
         pro.setMessage("请稍候...");
         pro.show();
@@ -234,11 +239,14 @@ public class BmobNetworkUtils {
     public void upDatesToBmob(final Context context) {
         Map<String,String> map = new HashMap<String,String>();
         try{
-            BmobUser user= BmobUser.getCurrentUser(context);
-            map.put("email",user.getEmail());
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"自动上传数据");
         }catch (Exception e){
             e.printStackTrace();
+            map.put("type", "自动上传数据");
         }
+        MobclickAgent.onEventValue(context, "AutoUpDatas", map, 0);
 
         File file=new File(datebasePath);
         MD5=getFileMD5(file);
@@ -379,11 +387,14 @@ public class BmobNetworkUtils {
     public void getDatasFromBmob(final Context context,String fileName){
         Map<String,String> map = new HashMap<String,String>();
         try{
-            BmobUser user= BmobUser.getCurrentUser(context);
-            map.put("email",user.getEmail());
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"下载数据");
         }catch (Exception e){
             e.printStackTrace();
+            map.put("type", "下载数据");
         }
+        MobclickAgent.onEventValue(context, "getDatas", map, 0);
 
         pro.setTitle("正在下载");
         pro.setMessage("请稍候...");

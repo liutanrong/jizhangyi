@@ -29,6 +29,7 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.utils.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -128,11 +129,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
         LogUtil.i("收入:" + _moneyIn + "\n支出：" + _moneyOut + "\n总计:" + _moneyAll);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.i("onResume");
-    }
+
 
     /**
      * 初始化本地数据库内数据
@@ -222,4 +219,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
         it.putExtras(bundle);
         activity.startActivity(it);
      }
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("HomeFragment"); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("HomeFragment");
+    }
 }

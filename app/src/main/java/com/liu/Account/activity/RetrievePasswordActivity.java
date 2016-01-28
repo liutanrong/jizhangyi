@@ -18,6 +18,7 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import cn.bmob.v3.BmobUser;
@@ -98,5 +99,18 @@ public class RetrievePasswordActivity extends AutoLayoutActivity{
                 finish();
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("RetrievePasswordActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("RetrievePasswordActivity");
+        MobclickAgent.onPause(this);
     }
 }

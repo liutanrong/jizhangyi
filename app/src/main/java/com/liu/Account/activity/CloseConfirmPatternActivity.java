@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.PrefsUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import me.zhanghai.android.patternlock.PatternView;
 public class CloseConfirmPatternActivity extends ConfirmPatternActivity {
     @Override
     protected boolean isStealthModeEnabled() {
-        // TODO: Return the value from SharedPreferences
+        //  Return the value from SharedPreferences
         PrefsUtil d=new PrefsUtil(this, Constants.PatternLock, Context.MODE_PRIVATE);
 
         return d.getBoolean("isPatternOn",false);
@@ -50,5 +51,18 @@ public class CloseConfirmPatternActivity extends ConfirmPatternActivity {
 
         // Finish with RESULT_FORGOT_PASSWORD.
         super.onForgotPassword();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("CloseConfirmPatternActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("CloseConfirmPatternActivity");
+        MobclickAgent.onPause(this);
     }
 }

@@ -29,11 +29,16 @@ import com.liu.Account.utils.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
 import com.liu.Account.initUtils.StatusBarUtil;
 import com.squareup.timessquare.CalendarPickerView;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import cn.bmob.v3.BmobUser;
 
 /**
  * Created by deonte on 16-1-24.
@@ -258,14 +263,15 @@ public class AddBillActivity extends AutoLayoutActivity {
             data.setDate(DateUtil.getStringByFormat(calendar.getTimeInMillis(),DateUtil.dateFormatYMDHMSw));
         }
 
-        LogUtil.i("创建时间:"+data.getCreatTime()+"" +
+        String log="创建时间:"+data.getCreatTime()+"" +
                 "\n选择时间:"+data.getUnixTime()+
                 "\n发生时间:"+data.getDate()+
                 "\n年："+data.getYear()+"  月:"+data.getMonth()+"  日："+data.getDayOfMonth()+
                 "\n账单类型:"+data.getType()+
                 "\n账单标签:"+data.getTag() +
                 "\n账单金额:"+data.getMoney()+
-                "\n账单备注:"+data.getRemark());
+                "\n账单备注:"+data.getRemark();
+        LogUtil.i(log);
         //{"_Id","spendMoney","remark","date","unixTime","creatTime","moneyType","Tag","year_date","month_date","day_year"};
         ////  16-1-25 写入数据库
         ContentValues cv=new ContentValues();
@@ -280,8 +286,32 @@ public class AddBillActivity extends AutoLayoutActivity {
         cv.put(Constants.column[9],data.getMonth());
         cv.put(Constants.column[10], data.getDayOfMonth());
         db.insert(Constants.tableName, cv);
-        //// TODO: 16-1-25 添加账单 统计数据
+        ////  16-1-25 添加账单 统计数据
+        Map<String,String> map = new HashMap<String,String>();
+        try{
+            BmobUser user=BmobUser.getCurrentUser(context);
+
+            map.put("type",user.getObjectId()+"\t新增\t"+log);
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("type","新增\t"+log);
+        }
+        MobclickAgent.onEventValue(context, "addAccount", map, 0);
+
         this.startActivity(new Intent(context,MainActivity.class));
         AddBillActivity.this.finish();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("AddBillActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("AddBillActivity");
+        MobclickAgent.onPause(this);
     }
 }

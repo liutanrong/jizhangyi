@@ -23,6 +23,8 @@
         <meta-data android:name="design_height" android:value="1024">
         </meta-data>
 
+        <meta-data android:value="5675498967e58eaec500254a" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
         <activity
             android:name=".activity.LaunchActivity"
             android:label="@string/app_name"
@@ -88,6 +90,17 @@
         <activity
             android:name=".activity.CloseConfirmPatternActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <!--友盟服务-->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
     </application>
 
