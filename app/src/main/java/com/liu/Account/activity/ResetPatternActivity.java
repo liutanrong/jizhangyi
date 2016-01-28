@@ -64,6 +64,10 @@ public class ResetPatternActivity extends AutoLayoutActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        BmobUser u=BmobUser.getCurrentUser(context);
+        if (u!=null){
+            mLogin_user_name.setText(u.getUsername());
+        }
     }
 
     private void BmobLogin(String userName, String password) {
@@ -121,7 +125,7 @@ public class ResetPatternActivity extends AutoLayoutActivity {
     private void initTop() {
         titleBack = (ImageView) findViewById(R.id.title_back);
         topText= (TextView) findViewById(R.id.title_text);
-        topText.setText(R.string.login);
+        topText.setText("验证登陆");
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
