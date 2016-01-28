@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
+import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -19,25 +21,25 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
- * Created by deonte on 16-1-25.
+ * Created by deonte on 16-1-28.
  */
-public class LoginActivity extends AutoLayoutActivity{
+public class ResetPatternActivity extends AutoLayoutActivity {
     private Context context;
     private ImageView titleBack;
     private TextView topText;
-    private TextView topRight;
 
     private EditText mLogin_user_name;
     private EditText mLogin_password;
     private Button mLogin_login;
     private TextView mFindPassword;
     private String userName,password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_reset_pattern);
 
-        context=LoginActivity.this;
+        context=ResetPatternActivity.this;
         initTop();
         bindViews();
         mFindPassword.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +59,11 @@ public class LoginActivity extends AutoLayoutActivity{
                 BmobLogin(userName, password);
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void BmobLogin(String userName, String password) {
@@ -78,7 +84,7 @@ public class LoginActivity extends AutoLayoutActivity{
             return;
         }
         final ProgressDialog pro = new ProgressDialog(context);
-        pro.setTitle("正在登陆");
+        pro.setTitle("正在验证");
         pro.setMessage("请稍等...");
         pro.show();
 
@@ -90,14 +96,24 @@ public class LoginActivity extends AutoLayoutActivity{
             public void onSuccess() {
                 //登陆成功
                 pro.dismiss();
-                finish();
+                PrefsUtil d = new PrefsUtil(ResetPatternActivity.this, Constants.PatternLock, Context.MODE_PRIVATE);
+                String objid=d.getString("PatternUserId");
+                BmobUser user1=BmobUser.getCurrentUser(context);
+                if (user1.getObjectId().equals(objid)) {
+                    d.putBoolean("isPatternOn", false);
+                    startActivity(new Intent(context, MainActivity.class));
+                    finish();
+                }else {
+                    ToastUtil.showShort(context,"验证失败");
+                }
+
             }
 
             @Override
             public void onFailure(int i, String s) {
                 //登陆失败
                 pro.dismiss();
-                ToastUtil.showShort(context,getString(R.string.loginFailed)+s);
+                ToastUtil.showShort(context,"验证失败\n"+s);
             }
         });
     }
@@ -109,17 +125,6 @@ public class LoginActivity extends AutoLayoutActivity{
         titleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-            }
-        });
-        topRight= (TextView) findViewById(R.id.title_right);
-        topRight.setText("注册");
-        topRight.setTextColor(getResources().getColor(R.color.white));
-        topRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //点击注册进入注册页面
-                startActivity(new Intent(context,RegisterActivity.class));
                 finish();
             }
         });

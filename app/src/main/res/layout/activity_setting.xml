@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/activity_title"/>
 
-    <TextView
-        android:padding="20px"
-        android:text="暂时好像没什么好设置的"
-        android:textSize="30px"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100px">
+                <TextView
+                    android:text="@string/settingPatternHint"
+                    android:textSize="40px"
+                    android:paddingLeft="30px"
+                    android:gravity="center_vertical"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/settingPattern"
+                    style="@style/SwitchButtonStyle"
+                    android:gravity="center_vertical"
+                    android:checked="false"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -28,9 +28,11 @@ import android.widget.Toast;
 import com.bmob.BmobProFile;
 import com.bmob.btp.callback.DownloadListener;
 import com.liu.Account.BmobRespose.BmobUsers;
+import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.application.ApplicationDatas;
 import com.liu.Account.commonUtils.LogUtil;
+import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.fragment.FragmentFactory;
 import com.liu.Account.initUtils.DeviceInformation;
@@ -96,7 +98,9 @@ public class MainActivity extends AutoLayoutActivity
 
         get.upInfoToBmob(bundle);//上传设备信息到bmob
 
+
     }
+
 
     @Override
     protected void onStart() {
@@ -161,13 +165,8 @@ public class MainActivity extends AutoLayoutActivity
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BmobUser bmobUser = BmobUser.getCurrentUser(MainActivity.this);
-                if(bmobUser == null){
-                    //未登录
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                }else {//已登陆
                     startActivity(new Intent(MainActivity.this,AccountActivity.class));
-                }
+
              }
         });
     }

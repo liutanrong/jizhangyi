@@ -121,6 +121,16 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
     @Override
     protected void onStart() {
         super.onStart();
+        BmobUser US=BmobUser.getCurrentUser(context);
+        if (US==null){
+            //未登陆
+            startActivity(new Intent(context,LoginActivity.class));
+            finish();
+        }else {
+            setNameAndPic();
+        }
+
+
         setNameAndPic();
 
     }
@@ -188,6 +198,9 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
+                                //将图形密码置为空
+                                PrefsUtil d=new PrefsUtil(context, Constants.PatternLock, Context.MODE_PRIVATE);
+                                d.putBoolean("isPatternOn", false);
                                 BmobUser.logOut(context);   //清除缓存用户对象
                             }
                         }).setNegativeButton("取消",null)

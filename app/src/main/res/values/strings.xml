@@ -81,4 +81,5 @@
     <string name="aboutUseEmail">邮箱:liutanrong0425@163.com</string>
     <string name="aboutUsWechat">微信:www_12306com</string>
     <string name="aboutUsWeibo">新浪微博:@Ry6hn</string>
+    <string name="settingPatternHint">手势密码</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.liu.Account.Constants.Constants;
@@ -17,15 +18,22 @@ import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
 import com.zhy.autolayout.AutoLayoutActivity;
 
+import java.util.List;
+
+import me.zhanghai.android.patternlock.ConfirmPatternActivity;
+import me.zhanghai.android.patternlock.PatternUtils;
+import me.zhanghai.android.patternlock.PatternView;
+
 /**
  *  @author liutanrong0425@163.com
  * Created by deonte on 15-11-4.
  */
-public class LaunchActivity extends AutoLayoutActivity {
+public class LaunchActivity extends ConfirmPatternActivity {
     private Context context;
     private DatabaseUtil db;
 
     public final int MSG_FINISH_LAUNCHERACTIVITY = 500;
+    public final int MSG_FINISH_LAUNCHERACTIVITY2 = 700;
 
     public Handler mHandler = new Handler(){
         public void handleMessage(Message msg) {
@@ -36,7 +44,10 @@ public class LaunchActivity extends AutoLayoutActivity {
                     startActivity(intent);
                     finish();
                     break;
-
+                case MSG_FINISH_LAUNCHERACTIVITY2:
+                    Intent intt = new Intent(LaunchActivity.this, MainActivity.class);
+                    startActivity(intt);
+                    break;
                 default:
                     break;
             }
@@ -46,8 +57,7 @@ public class LaunchActivity extends AutoLayoutActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_launch);
-        mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 1000);
+
 
         context=LaunchActivity.this;
         Init.Bmob(context);//初始化bmob
@@ -133,4 +143,40 @@ public class LaunchActivity extends AutoLayoutActivity {
         return null;
     }
 **/
+    @Override
+    protected boolean isStealthModeEnabled() {
+    // TODO: Return the value from SharedPreferences
+        PrefsUtil d=new PrefsUtil(LaunchActivity.this, Constants.PatternLock,Context.MODE_PRIVATE);
+        if (!d.getBoolean("isPatternOn",false)) {
+            //不开着屏幕锁
+            setContentView(R.layout.activity_launch);
+            mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 1000);
+        }
+        return d.getBoolean("isPatternOn",false);
+}
+
+    @Override
+    protected boolean isPatternCorrect(List<PatternView.Cell> pattern) {
+        //
+        String patternSha1 = null;
+        PrefsUtil d=new PrefsUtil(LaunchActivity.this, Constants.PatternLock,Context.MODE_PRIVATE);
+        patternSha1=d.getString("sha1");
+        boolean i=TextUtils.equals(PatternUtils.patternToSha1String(pattern), patternSha1);
+        if (i){
+            mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY2, 0);
+        }else {
+            //// TODO: 16-1-28 Bug待解决
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onForgotPassword() {
+
+        startActivity(new Intent(this, ResetPatternActivity.class));
+
+        // Finish with RESULT_FORGOT_PASSWORD.
+        super.onForgotPassword();
+    }
 }

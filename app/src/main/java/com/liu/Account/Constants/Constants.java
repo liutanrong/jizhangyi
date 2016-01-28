@@ -14,4 +14,6 @@ public class Constants {
     public static String AppSavePath=null;
     public static String FileName="jizhangyi/";
     public static String DatabasePath="/data/data/com.liu.Account/databases/";
+
+    public static final String PatternLock="patternLock";
 }
