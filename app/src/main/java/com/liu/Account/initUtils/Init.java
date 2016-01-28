@@ -71,5 +71,6 @@ public class Init {
 
     public static void Umeng(Context context) {
         MobclickAgent.openActivityDurationTrack(false);
+        UmengUpdateAgent.setUpdateCheckConfig(false);
     }
 }

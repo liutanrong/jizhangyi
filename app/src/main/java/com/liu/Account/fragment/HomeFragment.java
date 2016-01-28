@@ -94,15 +94,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
         Calendar calendar=Calendar.getInstance();
         currentYear=calendar.get(Calendar.YEAR);
         currentMonth=calendar.get(Calendar.MONTH)+1;
-        date.setText(currentYear+"."+currentMonth);
+        date.setText(currentYear + "." + currentMonth);
 
 
         String query;
         query="select * from "+ Constants.tableName+" where year_date=? and month_date=? order by unixtime desc";
-        Cursor cursor=db.queryCursor(query, new String[]{"" + currentYear, "" + currentMonth});
-        initArray(cursor);
-
-        getMoneyCount(cursor);
+        try {
+            Cursor cursor = db.queryCursor(query, new String[]{"" + currentYear, "" + currentMonth});
+            initArray(cursor);
+            getMoneyCount(cursor);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void getMoneyCount(Cursor cursor) {

@@ -64,7 +64,7 @@ public class BmobNetworkUtils {
         print("outpath " + outPath);
         File file=context.getDatabasePath(Constants.DBNAME);
         datebasePath=file.getPath();
-        LogUtil.i("database路径："+datebasePath);
+        LogUtil.i("database路径：" + datebasePath);
     }
     /**
      * 上传数据到Bmob
@@ -112,8 +112,8 @@ public class BmobNetworkUtils {
                         query.findObjects(context, new FindListener<BmobNewDatas>() {
                             @Override
                             public void onSuccess(List<BmobNewDatas> list) {
-                                BmobNewDatas datas=new BmobNewDatas();
-                                BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
+                                BmobNewDatas datas = new BmobNewDatas();
+                                BmobUsers user = BmobUsers.getCurrentUser(context, BmobUsers.class);
 
                                 if (list.size() > 0) {
                                     list.get(0).getObjectId();
@@ -137,8 +137,8 @@ public class BmobNetworkUtils {
                                                 public void onSuccess() {
                                                     print("上传成功,文件名：" + s);
                                                     pro.dismiss();
-                                                    Calendar calendar=Calendar.getInstance();
-                                                    PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    PrefsUtil d = new PrefsUtil(context, Constants.PrefsName, Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
                                                     ToastUtil.showShort(context, R.string.updateSuccess);
                                                 }
@@ -183,8 +183,8 @@ public class BmobNetworkUtils {
                                                     print("上传成功,文件名：" + s);
                                                     pro.dismiss();
                                                     ToastUtil.showShort(context, R.string.updateSuccess);
-                                                    Calendar calendar=Calendar.getInstance();
-                                                    PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    PrefsUtil d = new PrefsUtil(context, Constants.PrefsName, Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
 
                                                 }
@@ -205,7 +205,7 @@ public class BmobNetworkUtils {
                                             print("上传失败  文件信息更新失败");
                                             Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
                                             pro.dismiss();
-                                       }
+                                        }
                                     });
                                 }
                             }
@@ -271,102 +271,46 @@ public class BmobNetworkUtils {
 
                         final BmobNewDatas datas=new BmobNewDatas();
                         final BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
-                        BmobQuery<BmobNewDatas> query=new BmobQuery<BmobNewDatas>();
-                        query.addWhereEqualTo("authorEmail", user.getEmail());
-                        query.findObjects(context, new FindListener<BmobNewDatas>() {
+                        if (user!=null){
+                            datas.setAuthor(user);
+                            datas.setAuthorEmail(user.getEmail());
+                        }
+                        datas.setFile(bmobFile);
+                        datas.setFileName(s);
+                        datas.setType("update");
+                        datas.save(context, new SaveListener() {
                             @Override
-                            public void onSuccess(List<BmobNewDatas> list) {
-                                BmobNewDatas datas=new BmobNewDatas();
-                                BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
+                            public void onSuccess() {
+                                BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
+                                i.setFileName(s);
+                                i.setDBMd5(MD5);
+                                SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                                String ss = DateFormat.format(new java.util.Date());
+                                i.setDBupdateDate(ss);
+                                i.update(context, new UpdateListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        print("上传成功,文件名：" + s);
+                                        pro.dismiss();
+                                        Calendar calendar=Calendar.getInstance();
+                                        PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
+                                        d.putLong("autoUpateTime", calendar.getTimeInMillis());
 
-                                if (list.size() > 0) {
-                                    list.get(0).getObjectId();
+                                    }
 
-                                    datas.setAuthor(user);
-                                    datas.setAuthorEmail(user.getEmail());
-                                    datas.setFile(bmobFile);
-                                    datas.setFileName(s);
-                                    datas.setType("update");
-                                    datas.update(context, list.get(0).getObjectId(), new UpdateListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                            i.setFileName(s);
-                                            i.setDBMd5(MD5);
-                                            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                            String ss = DateFormat.format(new java.util.Date());
-                                            i.setDBupdateDate(ss);
-                                            i.update(context, new UpdateListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    print("上传成功,文件名：" + s);
-                                                    pro.dismiss();
-                                             }
+                                    @Override
+                                    public void onFailure(int i, String s) {
 
-                                                @Override
-                                                public void onFailure(int i, String s) {
-
-                                                    print("上传失败 账户信息更新失败");
-                                                    pro.dismiss();
-                                              }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onFailure(int i, String s) {
-                                            print("上传失败  文件信息更新失败");
-                                            pro.dismiss();
-
-                                        }
-                                    });
-
-                                } else {
-                                    datas.setAuthor(user);
-                                    datas.setAuthorEmail(user.getEmail());
-                                    datas.setFile(bmobFile);
-                                    datas.setFileName(s);
-                                    datas.setType("update");
-                                    datas.save(context, new SaveListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                            i.setFileName(s);
-                                            i.setDBMd5(MD5);
-                                            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                            String ss = DateFormat.format(new java.util.Date());
-                                            i.setDBupdateDate(ss);
-                                            i.update(context, new UpdateListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    print("上传成功,文件名：" + s);
-                                                    pro.dismiss();
-                                                    Calendar calendar=Calendar.getInstance();
-                                                    PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
-                                                    d.putLong("autoUpateTime", calendar.getTimeInMillis());
-
-                                                }
-
-                                                @Override
-                                                public void onFailure(int i, String s) {
-
-                                                    print("上传失败 账户信息更新失败");
-                                                    pro.dismiss();
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onFailure(int i, String s) {
-
-                                            print("上传失败  文件信息更新失败");
-                                        }
-                                    });
-                                }
+                                        print("上传失败 账户信息更新失败");
+                                        pro.dismiss();
+                                    }
+                                });
                             }
 
                             @Override
-                            public void onError(int i, String s) {
+                            public void onFailure(int i, String s) {
 
+                                print("上传失败  文件信息更新失败");
                             }
                         });
 
