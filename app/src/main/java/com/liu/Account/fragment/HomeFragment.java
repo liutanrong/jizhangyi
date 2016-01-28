@@ -83,6 +83,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
         super.onStart();
         LogUtil.i("OnStart");
 
+        moneyIn.setText(getResources().getText(R.string.homeMoneyDefault));
+        moneyOut.setText(getResources().getText(R.string.homeMoneyDefault));
+        moneyAll.setText(getResources().getText(R.string.homeMoneyDefault));
 
         db=new DatabaseUtil(activity,Constants.DBNAME,1);
 

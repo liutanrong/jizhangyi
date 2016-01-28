@@ -73,6 +73,9 @@ public class LoginActivity extends AutoLayoutActivity{
         }else if (!AppUtil.isEmailNO(userName)){
             ToastUtil.showShort(context,getString(R.string.emailIncorrent));
             return;
+        }else if (password.length()<6){
+            ToastUtil.showShort(context,getString(R.string.passwordTooShort));
+            return;
         }
         final ProgressDialog pro = new ProgressDialog(context);
         pro.setTitle("正在登陆");

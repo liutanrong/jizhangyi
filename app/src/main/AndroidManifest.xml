@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="design_width" android:value="600">
+        <meta-data android:name="design_width" android:value="768">
         </meta-data>
         <meta-data android:name="design_height" android:value="1024">
         </meta-data>
@@ -62,6 +62,22 @@
         </activity>
         <activity
             android:name=".activity.RetrievePasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.GiveIdeaActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

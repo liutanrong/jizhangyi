@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.liu.Account.BmobNetwork.BmobNetworkUtils;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.DateUtil;
@@ -98,22 +99,32 @@ public class LookBillActivity extends AutoLayoutActivity {
     }
 
     private void deleteData() {
-        ////  16-1-25 删除本条账单
+        ////TODO  16-1-25 删除账单
         Dialog dialog =new AlertDialog.Builder(context)
                 .setTitle(R.string.deleteBillTitle)
                 .setMessage(R.string.deleteBillMessage)
-                .setNegativeButton(R.string.deleteBillNegaBtm,null)
+                .setNegativeButton(R.string.deleteBillNegaBtm, null)
                 .setPositiveButton(R.string.deleteBillPosBtm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int i=db.delete(Constants.tableName,"unixTime=?",new String[]{unixTime});
-                        LogUtil.i("删除影响的记录数:"+i);
-                        if (i==0){
-                            ToastUtil.showShort(context,getString(R.string.deleteBillFailed));
-                        }else {
-                            ToastUtil.showShort(context,getString(R.string.deleteBillSuccess));
+                        int i = db.delete(Constants.tableName, "unixTime=?", new String[]{unixTime});
+                        LogUtil.i("删除影响的记录数:" + i);
+                        if (i == 0) {
+                            ToastUtil.showShort(context, getString(R.string.deleteBillFailed));
+                        } else {
+                            ToastUtil.showShort(context, getString(R.string.deleteBillSuccess));
                         }
-                        //// TODO: 16-1-25 从云端删除 (上传一次)
+                        //// 16-1-25 从云端删除 (上传一次)
+                        Thread thread=new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                BmobNetworkUtils d = new BmobNetworkUtils(context);
+                                d.upDatesToBmob(context);
+                            }
+                        };
+                        thread.run();
+
                         finish();
                     }
                 }).create();

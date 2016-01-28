@@ -68,7 +68,7 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
         BmobUsers user=BmobUser.getCurrentUser(activity,BmobUsers.class);
         switch (v.getId()){
             case R.id.sync_update:{
-                //// TODO: 16-1-26 上传数据
+                ////  16-1-26 上传数据
                 if (user!=null){
                     BmobNetworkUtils d=new BmobNetworkUtils(activity);
                     d.upDatesToBmobWithDialog(activity);
@@ -88,7 +88,7 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
                 onStart();
                 break;
             }case R.id.sync_downland:{
-                //// TODO: 16-1-26 下载数据
+                ////  16-1-26 下载数据
                 if (user!=null){
                     BmobUsers bmobUser=BmobUser.getCurrentUser(activity,BmobUsers.class);
                     if (bmobUser.getFileName()!=null){

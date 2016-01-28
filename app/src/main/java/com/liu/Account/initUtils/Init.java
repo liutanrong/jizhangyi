@@ -47,11 +47,16 @@ public class Init {
                     Constants.FileName == null ? "test" : Constants.FileName);
             if (!dir.exists())
                 dir.mkdir();
-            Constants.AppSavePath=dir.getPath();
+            Constants.AppSavePath=dir.getPath()+"/";
             LogUtil.i("储存文件夹"+Constants.AppSavePath);
         }else
         {
             LogUtil.i("储存不可用");
         }
+    }
+
+    public static String  DatabasePath(Context context,String name) {
+        File F=context.getDatabasePath(name);
+        return F.getPath();
     }
 }

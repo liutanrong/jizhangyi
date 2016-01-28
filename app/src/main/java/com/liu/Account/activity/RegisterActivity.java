@@ -50,7 +50,7 @@ public class RegisterActivity extends AutoLayoutActivity{
                 String password1 = mRegister_password.getText().toString().trim();
                 String password2 = mRegister_password_t.getText().toString().trim();
 
-                register(userName,password1,password2);
+                register(userName, password1, password2);
             }
         });
     }
@@ -66,6 +66,8 @@ public class RegisterActivity extends AutoLayoutActivity{
         }else if (!password1.equals(password2)) {
             ToastUtil.showShort(context, getString(R.string.passwordNotSame));
             return;
+        }else if (password1.length()<6){
+            ToastUtil.showShort(context,getString(R.string.passwordTooShort));
         }else if (!AppUtil.isNetworkOK(context)){
             ToastUtil.showShort(context,getString(R.string.loginNetworkFalse));
             return;

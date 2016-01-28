@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.liu.Account.BmobNetwork.BmobNetworkUtils;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.Constants.TagConstats;
 import com.liu.Account.R;
@@ -290,7 +291,17 @@ public class ModifyBillActivity extends AutoLayoutActivity {
         cv.put(Constants.column[9],data.getMonth());
         cv.put(Constants.column[10], data.getDayOfMonth());
         db.update(Constants.tableName, cv,"unixTime=?",new String[]{unixTime});
-        //// TODO: 16-1-25 在云端修改
+        ////  16-1-25 在云端修改
+        //// TODO: 16-1-28 修改账单 
+        Thread thread=new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                BmobNetworkUtils d = new BmobNetworkUtils(context);
+                d.upDatesToBmob(context);
+            }
+        };
+        thread.run();
         this.startActivity(new Intent(context,MainActivity.class));
         finish();
     }

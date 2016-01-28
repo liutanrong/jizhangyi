@@ -12,5 +12,6 @@ public class Constants {
             {"_Id","spendMoney","remark","date","unixTime","creatTime","moneyType","Tag","year_date","month_date","day_year"};
     public static final String PrefsName="syncFile";
     public static String AppSavePath=null;
-    public static String FileName="jizhangyi";
+    public static String FileName="jizhangyi/";
+    public static String DatabasePath="/data/data/com.liu.Account/databases/";
 }

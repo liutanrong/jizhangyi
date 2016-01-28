@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/activity_title"/>
+    <TextView
+        android:text="@string/aboutUsTextTop"
+        android:padding="20px"
+        android:textSize="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="20px"
+        android:textSize="30px"
+        android:text="@string/aboutUseEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="20px"
+        android:text="@string/aboutUsWechat"
+        android:textSize="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="20px"
+        android:text="@string/aboutUsWeibo"
+        android:textSize="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

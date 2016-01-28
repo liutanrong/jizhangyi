@@ -16,8 +16,10 @@ import com.liu.Account.BmobRespose.BmobNewDatas;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
+import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
 
 import java.io.File;
@@ -51,13 +53,17 @@ public class BmobNetworkUtils {
     private ProgressDialog pro;
 
     private String MD5;
-    private static final String PackagePath="/data/data/com.liu.Account/databases/";
+    //private static  String PackagePath=Constants.DatabasePath;
+    private static String datebasePath=null;
     public BmobNetworkUtils(Context context){
         this.context=context;
          pro= new ProgressDialog(context);
 
         this.outPath=Constants.AppSavePath;
         print("outpath " + outPath);
+        File file=context.getDatabasePath(Constants.DBNAME);
+        datebasePath=file.getPath();
+        LogUtil.i("database路径："+datebasePath);
     }
     /**
      * 上传数据到Bmob
@@ -73,7 +79,7 @@ public class BmobNetworkUtils {
         pro.setTitle("正在上传");
         pro.setMessage("请稍候...");
         pro.show();
-        File file=new File(PackagePath+Constants.DBNAME);
+        File file=new File(datebasePath);
         MD5=getFileMD5(file);
         BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
 
@@ -88,7 +94,7 @@ public class BmobNetworkUtils {
             print("还没有云MD5 "+e.toString());
 
         }
-        copyDataBase(PackagePath+Constants.DBNAME,outPath+Constants.DBNAME);
+        copyDataBase(datebasePath,outPath+Constants.DBNAME);
         BTPFileResponse response= BmobProFile.getInstance(context)
                 .upload(outPath+Constants.DBNAME, new UploadListener() {
                     @Override
@@ -234,7 +240,7 @@ public class BmobNetworkUtils {
             e.printStackTrace();
         }
 
-        File file=new File(PackagePath+Constants.DBNAME);
+        File file=new File(datebasePath);
         MD5=getFileMD5(file);
         BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
         print("当前数据库大小："+getFileSize(file));
@@ -248,7 +254,7 @@ public class BmobNetworkUtils {
             print("还没有云MD5 "+e.toString());
 
         }
-        copyDataBase(PackagePath + Constants.DBNAME, outPath + Constants.DBNAME);
+        copyDataBase(datebasePath, outPath + Constants.DBNAME);
 
         BTPFileResponse response= BmobProFile.getInstance(context)
                 .upload(outPath+Constants.DBNAME, new UploadListener() {
@@ -382,7 +388,7 @@ public class BmobNetworkUtils {
         pro.setTitle("正在下载");
         pro.setMessage("请稍候...");
         pro.show();
-        File file=new File(PackagePath+Constants.DBNAME);
+        File file=new File(datebasePath);
         MD5=getFileMD5(file);
         BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
 
@@ -400,7 +406,7 @@ public class BmobNetworkUtils {
         BmobProFile.getInstance(context).download(fileName, new DownloadListener() {
             @Override
             public void onSuccess(String s) {
-                copyDataBase(s, PackagePath + Constants.DBNAME);
+                copyDataBase(s, datebasePath);
                 DatabaseUtil databaseUtil=new DatabaseUtil(context,Constants.DBNAME,1);
                 try {
                     databaseUtil.renameTable("date",Constants.tableName);
@@ -410,7 +416,7 @@ public class BmobNetworkUtils {
                 print("文件下载成功,文件路径" + s);
                 pro.dismiss();
                 ToastUtil.showShort(context, context.getString(R.string.getDatasSuccess));
-                //// TODO: 16-1-26 下载成功
+                //  下载成功
             }
 
             @Override
@@ -423,7 +429,7 @@ public class BmobNetworkUtils {
                 print("文件下载失败:" + i + "  " + s);
                 pro.dismiss();
                 ToastUtil.showShort(context,R.string.getDatasFailed);
-            //// TODO: 16-1-26 下载失败
+            ////  16-1-26 下载失败
             }
         });
     }

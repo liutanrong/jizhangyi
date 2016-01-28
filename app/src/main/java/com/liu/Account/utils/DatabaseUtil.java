@@ -104,6 +104,9 @@ public class DatabaseUtil {
         return cursor.getCount();
     }
 
+    public void deleteAll(String tableName){
+        writeableDatabase.delete(tableName,null,null);
+    }
     /*
     删除表
     * **/

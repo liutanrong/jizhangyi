@@ -47,7 +47,7 @@
     <string name="deleteBillFailed">删除失败</string>
     <string name="deleteBillSuccess">删除成功</string>
 
-    <!--登陆页面-->
+    <!--登陆/注册/找回密码页面/-->
     <string name="userNameHint">请输入用户名</string>
     <string name="loginLogin">登陆</string>
     <string name="userNameNull">用户名不能为空</string>
@@ -59,9 +59,12 @@
     <string name="retrieve_password">重置密码</string>
     <string name="retrieveUserNameHint">请输入邮箱</string>
     <string name="emailIncorrent">请输入正确的邮箱</string>
+    <string name="passwordTooShort">请输入至少6位密码</string>
     <string name="register">注册</string>
     <string name="passwordNotSame">两次密码不一致</string>
     <string name="sync_hint">您可将数据同步至服务器,以便在新的设备上使用这些数据.</string>
+
+    <!--同步页面-->
     <string name="sync_last">上次同步时间</string>
     <string name="sync_update">上传数据</string>
     <string name="sync_downland">下载数据</string>
@@ -69,4 +72,13 @@
     <string name="updateFailed">上传失败</string>
     <string name="getDatasFailed">数据下载失败</string>
     <string name="getDatasSuccess">数据下载成功</string>
+    <!--意见反馈-->
+    <string name="menu_idea_version">版本:</string>
+    <string name="menu_idea_aboutus_edt">请输入您的宝贵意见及建议</string>
+    <string name="menu_idea_aboutus_edt_phone">请输入您的联系方式</string>
+    <!--关于我们-->
+    <string name="aboutUsTextTop">我们的联系方式</string>
+    <string name="aboutUseEmail">邮箱:liutanrong0425@163.com</string>
+    <string name="aboutUsWechat">微信:www_12306com</string>
+    <string name="aboutUsWeibo">新浪微博:@Ry6hn</string>
 </resources>

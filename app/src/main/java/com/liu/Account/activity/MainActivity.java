@@ -1,12 +1,15 @@
 package com.liu.Account.activity;
 
 import android.app.Fragment;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.support.design.widget.NavigationView;
@@ -14,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +30,7 @@ import com.bmob.btp.callback.DownloadListener;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
+import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.fragment.FragmentFactory;
 import com.liu.Account.initUtils.DeviceInformation;
 import com.liu.Account.initUtils.StatusBarUtil;
@@ -52,6 +57,9 @@ public class MainActivity extends AutoLayoutActivity
     private TextView headerText;
 
     private Context context;
+
+    private MenuItem searchItem;
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +102,7 @@ public class MainActivity extends AutoLayoutActivity
         super.onStart();
 
         headerIcon.setImageResource(R.drawable.iconfont_yonghu128);
-        headerText.setText("");
+        headerText.setText("匿名用户");
 
         BmobUsers bmobUsers=BmobUser.getCurrentUser(context,BmobUsers.class);
         if (bmobUsers!=null)
@@ -142,7 +150,7 @@ public class MainActivity extends AutoLayoutActivity
     }
 
     private void initView() {
-        //// TODO: 16-1-23 点击用户头像
+        // 16-1-23 点击用户头像
         headerIcon= (ImageView) headerView.findViewById(R.id.userIcon);
         headerText= (TextView) headerView.findViewById(R.id.userName);
 
@@ -194,7 +202,7 @@ public class MainActivity extends AutoLayoutActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //// TODO: 16-1-23 左侧选择时
+        // 16-1-23 左侧选择时
 
         if (id == R.id.menu_home) {
             position=1;
@@ -217,13 +225,17 @@ public class MainActivity extends AutoLayoutActivity
             replaceFragment(FragmentFactory.ANALYSIS);
             getSupportActionBar().setTitle(R.string.menu_analysis);
         } else if (id == R.id.menu_give_idea) {
-            //// TODO: 16-1-23 意见反馈
+            ////  16-1-23 意见反馈
+            startActivity(new Intent(context,GiveIdeaActivity.class));
         }else if (id==R.id.menu_about_us){
-            //// TODO: 16-1-23 关于我们
+            ////  16-1-23 关于我们
+            startActivity(new Intent(context,AboutUsActivity.class));
         }else if (id==R.id.menu_checkForUpdate){
             //// TODO: 16-1-23 检查更新
+            ToastUtil.showShort(context,"检查更新");
         }else if (id==R.id.menu_setting){
-            //// TODO: 16-1-23 设置
+            ////  16-1-23 设置
+            startActivity(new Intent(context,SettingActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -246,6 +258,8 @@ public class MainActivity extends AutoLayoutActivity
         if (null == fragments[num]) {
             fragments[num] = FragmentFactory.createFragment(num);
         }
+        if (num==FragmentFactory.SEARCH)
+            searchItem.setVisible(true);
         getFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, fragments[num]).commit();
 
@@ -254,6 +268,40 @@ public class MainActivity extends AutoLayoutActivity
         currentFragment = num;
 
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchItem=menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+        searchView= (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchManager sea= (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(sea.getSearchableInfo(getComponentName()));
+        
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            ToastUtil.showShort(context,"search");
+            LogUtil.d("search");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     /**
      * 菜单、返回键响应

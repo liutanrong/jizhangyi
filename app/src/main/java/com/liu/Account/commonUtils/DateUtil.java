@@ -414,7 +414,7 @@ public class DateUtil {
             mill=d.getTime();
             return d.getTime();
         } catch (ParseException e) {
-            // TODO 自动生成的 catch 块
+            //  自动生成的 catch 块
             e.printStackTrace();
         }
         return mill;

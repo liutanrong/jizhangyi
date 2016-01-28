@@ -135,7 +135,7 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         }
         if (fileName==null)
             return;
-        LogUtil.i("用户头像file名称"+fileName);
+        LogUtil.i("用户头像file名称" + fileName);
         BmobProFile.getInstance(context).download(users.getHeaderIconFileName(),
                 new DownloadListener() {
                     @Override
@@ -144,16 +144,16 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                         if (bitmap != null)
                             userIcon.setImageBitmap(bitmap);
                         String temp = null;
-                        String e=null;
+                        String e = null;
                         try {
-                            e=users.getEmail();
+                            e = users.getEmail();
                             temp = users.getNickName();
                         } catch (Exception a) {
                             a.printStackTrace();
                         }
                         if (temp != null)
                             nickName.setText(users.getNickName());
-                        if (e!=null)
+                        if (e != null)
                             email.setText(e);
 
                     }
@@ -182,7 +182,7 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                                 try {
                                     DatabaseUtil db =new DatabaseUtil(context,Constants.DBNAME,1);
 
-                                    db.delete(Constants.tableName, "1", null);
+                                    db.deleteAll(Constants.tableName);
                                     db.close();
                                     AccountActivity.this.finish();
                                 }catch (Exception e){
@@ -198,7 +198,10 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                 if (nick.isEmpty()){
                     ToastUtil.showShort(context,"用户名不得为空");
                     return;
-                }else {
+                }else if (!AppUtil.isNetworkOK(context)){
+                    ToastUtil.showShort(context,getString(R.string.loginNetworkFalse));
+                    return;
+                } else {
 
                     pro.setTitle("正在保存");
                     pro.setMessage("请稍候...");
@@ -292,6 +295,7 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
             photo = extras.getParcelable("data");
             try {
                 BitmapUtil.saveImage(photo, Constants.AppSavePath + PicName, 300);
+                LogUtil.i("头像储存路径:"+Constants.AppSavePath+PicName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -353,6 +357,9 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                             }
                         });
 
+            }else {
+                pro.dismiss();
+                ToastUtil.showShort(context,getString(R.string.loginNetworkFalse));
             }
         }
     }
