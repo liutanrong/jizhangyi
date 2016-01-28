@@ -244,6 +244,23 @@ public class DateUtil {
         }
         return strDate;
     }
+    public static long getFirstDayOfMonth(){
+        Calendar c=new GregorianCalendar();
+        c.set(GregorianCalendar.DAY_OF_MONTH, 1);
+        c.set(GregorianCalendar.HOUR_OF_DAY,0);
+        c.set(GregorianCalendar.MINUTE,0);
+        c.set(GregorianCalendar.SECOND,0);
+        return c.getTimeInMillis();
+    }
+    public static long getLastDayOfMonth(){
+        Calendar c=new GregorianCalendar();
+        c.set(Calendar.DATE, 1);
+        c.roll(Calendar.DATE, -1);
+        c.set(GregorianCalendar.HOUR_OF_DAY,0);
+        c.set(GregorianCalendar.MINUTE,0);
+        c.set(GregorianCalendar.SECOND, 0);
+        return c.getTimeInMillis();
+    }
     /**
      * 描述：获取本月最后一天.
      *
@@ -266,6 +283,7 @@ public class DateUtil {
         }
         return strDate;
     }
+
 
     /**
      * 描述：Date类型转化为String类型.

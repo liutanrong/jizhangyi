@@ -13,4 +13,22 @@ public class TagConstats {
             R.drawable.tag_wage,R.drawable.tag_others};
     //上面数组中的一个
     public static final int defaultTag=1;
+
+
+
+    //搜索时用到都的
+    public static String InOrOutShow[]={"全部","支出","收入"};
+    public static String InOrOutSelect[]={"全部","支出","收入"};
+    public static final int InOrOutPosition=0;
+
+    public static String OrderByShow[]={"金额大小","创建时间","支出时间"};
+    public static String OrderBySelet[]={"spendMoney","creatTime","unixTime"};
+
+    //改这里的时候记得改adapter
+    public static String TagTypeShow[]={"无分类","餐饮","娱乐","购物","交通","工资","其他","全部"};
+    public static String TagTypeSelect[]={"无分类","餐饮","娱乐","购物","交通","工资","其他","全部"};
+    public static final int  TagTypePosition=7;
+
+    public static String OrderWayShow[]={"降序","升序"};
+    public static String OrderWaySelect[]={"desc","asc"};
 }

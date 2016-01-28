@@ -29,6 +29,7 @@ import com.bmob.BmobProFile;
 import com.bmob.btp.callback.DownloadListener;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.R;
+import com.liu.Account.application.ApplicationDatas;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.fragment.FragmentFactory;
@@ -277,10 +278,9 @@ public class MainActivity extends AutoLayoutActivity
         searchItem=menu.findItem(R.id.action_search);
         searchItem.setVisible(false);
         searchView= (SearchView) MenuItemCompat.getActionView(searchItem);
-        SearchManager sea= (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(sea.getSearchableInfo(getComponentName()));
-        
-
+        ApplicationDatas da= (ApplicationDatas) getApplication();
+        da.setSearchView(searchView);
+        //// TODO: 16-1-28 搜索框标准写法
         return true;
     }
 

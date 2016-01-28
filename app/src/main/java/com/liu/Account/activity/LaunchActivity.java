@@ -15,12 +15,13 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
  *  @author liutanrong0425@163.com
  * Created by deonte on 15-11-4.
  */
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends AutoLayoutActivity {
     private Context context;
     private DatabaseUtil db;
 
