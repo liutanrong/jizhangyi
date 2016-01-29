@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,7 +93,7 @@ public class LoginActivity extends AutoLayoutActivity{
             public void onSuccess() {
                 //登陆成功
                 pro.dismiss();
-                BmobUser user1=BmobUser.getCurrentUser(context);
+                BmobUser user1 = BmobUser.getCurrentUser(context);
                 MobclickAgent.onProfileSignIn(user1.getObjectId());
                 finish();
             }
@@ -101,7 +102,7 @@ public class LoginActivity extends AutoLayoutActivity{
             public void onFailure(int i, String s) {
                 //登陆失败
                 pro.dismiss();
-                ToastUtil.showShort(context,getString(R.string.loginFailed)+s);
+                ToastUtil.showShort(context, getString(R.string.loginFailed) + s);
             }
         });
     }
@@ -123,7 +124,7 @@ public class LoginActivity extends AutoLayoutActivity{
             @Override
             public void onClick(View v) {
                 //点击注册进入注册页面
-                startActivity(new Intent(context,RegisterActivity.class));
+                startActivity(new Intent(context, RegisterActivity.class));
                 finish();
             }
         });
@@ -147,5 +148,15 @@ public class LoginActivity extends AutoLayoutActivity{
         super.onPause();
         MobclickAgent.onPageEnd("LoginActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.liu.Account.Constants.Constants;
@@ -48,6 +49,7 @@ public class LaunchActivity extends ConfirmPatternActivity {
                 case MSG_FINISH_LAUNCHERACTIVITY2:
                     Intent intt = new Intent(LaunchActivity.this, MainActivity.class);
                     startActivity(intt);
+                    finish();
                     break;
                 default:
                     break;
@@ -177,5 +179,15 @@ public class LaunchActivity extends ConfirmPatternActivity {
         super.onPause();
         MobclickAgent.onPageEnd("LaunchActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

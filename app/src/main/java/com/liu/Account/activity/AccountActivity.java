@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -392,5 +393,15 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         super.onPause();
         MobclickAgent.onPageEnd("AccountActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

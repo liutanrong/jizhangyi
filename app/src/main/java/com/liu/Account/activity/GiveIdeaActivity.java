@@ -3,6 +3,7 @@ package com.liu.Account.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,5 +120,15 @@ public class GiveIdeaActivity extends AutoLayoutActivity implements View.OnClick
         super.onPause();
         MobclickAgent.onPageEnd("GiveIdeaActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

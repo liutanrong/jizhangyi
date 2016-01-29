@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,6 @@ public class RegisterActivity extends AutoLayoutActivity{
 
     private EditText mRegister_user_name;
     private EditText mRegister_password;
-    private EditText mRegister_password_t;
     private Button mRegister;
 
     @Override
@@ -49,14 +49,13 @@ public class RegisterActivity extends AutoLayoutActivity{
             public void onClick(View v) {
                 String userName = mRegister_user_name.getText().toString().trim();
                 String password1 = mRegister_password.getText().toString().trim();
-                String password2 = mRegister_password_t.getText().toString().trim();
 
-                register(userName, password1, password2);
+                register(userName, password1);
             }
         });
     }
 
-    private void register(String userName, String password1, String password2) {
+    private void register(String userName, String password1) {
 
         if (userName==null) {
             ToastUtil.showShort(context, getString(R.string.userNameNull));
@@ -64,10 +63,7 @@ public class RegisterActivity extends AutoLayoutActivity{
         }else if (password1==null){
             ToastUtil.showShort(context, getString(R.string.passwordNull));
             return;
-        }else if (!password1.equals(password2)) {
-            ToastUtil.showShort(context, getString(R.string.passwordNotSame));
-            return;
-        }else if (password1.length()<6){
+       }else if (password1.length()<6){
             ToastUtil.showShort(context,getString(R.string.passwordTooShort));
         }else if (!AppUtil.isNetworkOK(context)){
             ToastUtil.showShort(context,getString(R.string.loginNetworkFalse));
@@ -89,13 +85,13 @@ public class RegisterActivity extends AutoLayoutActivity{
             @Override
             public void onSuccess() {
                 pro.dismiss();
-                Dialog dialog =new AlertDialog.Builder(context)
+                Dialog dialog = new AlertDialog.Builder(context)
                         .setTitle("注册成功")
                         .setMessage("请进入您的邮箱完成邮箱验证,以方便您找回密码")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(context,AccountActivity.class));
+                                startActivity(new Intent(context, AccountActivity.class));
                                 finish();
                             }
                         }).create();
@@ -105,7 +101,7 @@ public class RegisterActivity extends AutoLayoutActivity{
             @Override
             public void onFailure(int i, String s) {
                 pro.dismiss();
-                ToastUtil.showShort(context,"注册失败"+s);
+                ToastUtil.showShort(context, "注册失败" + s);
             }
         });
     }
@@ -125,7 +121,6 @@ public class RegisterActivity extends AutoLayoutActivity{
 
         mRegister_user_name = (EditText) findViewById(R.id.register_user_name);
         mRegister_password = (EditText) findViewById(R.id.register_password);
-        mRegister_password_t = (EditText) findViewById(R.id.register_password_t);
         mRegister = (Button) findViewById(R.id.register);
         AppUtil.requestFocus(mRegister);
     }
@@ -142,5 +137,15 @@ public class RegisterActivity extends AutoLayoutActivity{
         super.onPause();
         MobclickAgent.onPageEnd("RegisterActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

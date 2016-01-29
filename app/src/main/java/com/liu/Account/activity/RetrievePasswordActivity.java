@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,7 +66,7 @@ public class RetrievePasswordActivity extends AutoLayoutActivity{
         BmobUser.resetPasswordByEmail(context, userName, new ResetPasswordByEmailListener() {
             @Override
             public void onSuccess() {
-                Dialog dialog =new AlertDialog.Builder(context)
+                Dialog dialog = new AlertDialog.Builder(context)
                         .setTitle("重置密码成功")
                         .setMessage("重置密码成功,请进入您的邮箱进行后续操作")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -113,5 +114,15 @@ public class RetrievePasswordActivity extends AutoLayoutActivity{
         super.onPause();
         MobclickAgent.onPageEnd("RetrievePasswordActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

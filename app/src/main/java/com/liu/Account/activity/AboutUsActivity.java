@@ -2,11 +2,13 @@ package com.liu.Account.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.liu.Account.R;
+import com.liu.Account.fragment.FragmentFactory;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -49,5 +51,15 @@ public class AboutUsActivity extends AutoLayoutActivity {
         super.onPause();
         MobclickAgent.onPageEnd("AboutUsActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

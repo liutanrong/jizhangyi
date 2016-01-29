@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -118,6 +119,7 @@ public class AddBillActivity extends AutoLayoutActivity {
 
         changeTag(TagConstats.defaultTag);
     }
+
 
     /**
      * 将tag更改为指定位置的tag
@@ -298,8 +300,7 @@ public class AddBillActivity extends AutoLayoutActivity {
         }
         MobclickAgent.onEventValue(context, "addAccount", map, 0);
 
-        this.startActivity(new Intent(context,MainActivity.class));
-        AddBillActivity.this.finish();
+        finish();
     }
     @Override
     protected void onResume() {
@@ -313,5 +314,15 @@ public class AddBillActivity extends AutoLayoutActivity {
         super.onPause();
         MobclickAgent.onPageEnd("AddBillActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

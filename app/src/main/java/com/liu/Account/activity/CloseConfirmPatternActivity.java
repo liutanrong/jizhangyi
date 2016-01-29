@@ -3,6 +3,7 @@ package com.liu.Account.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
@@ -64,5 +65,15 @@ public class CloseConfirmPatternActivity extends ConfirmPatternActivity {
         super.onPause();
         MobclickAgent.onPageEnd("CloseConfirmPatternActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

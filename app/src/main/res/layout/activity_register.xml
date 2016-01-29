@@ -36,15 +36,6 @@
                 android:layout_marginLeft="50px"
                 android:layout_width="match_parent"
                 android:layout_height="80px" />
-            <EditText
-                android:id="@+id/register_password_t"
-                android:hint="请再次输入密码"
-                android:password="true"
-                android:drawableLeft="@drawable/iconfont_mima32"
-                android:layout_marginRight="50px"
-                android:layout_marginLeft="50px"
-                android:layout_width="match_parent"
-                android:layout_height="80px" />
             <Button
                 android:id="@+id/register"
                 android:text="注册"

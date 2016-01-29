@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -53,28 +54,28 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
         updateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LogUtil.i("autoUpdate"+position);
+                LogUtil.i("autoUpdate" + position);
                 switch (position) {
                     case 0:
                         //每天
-                        LogUtil.i("autoUpdate"+"每天");
+                        LogUtil.i("autoUpdate" + "每天");
                         PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                        long temp=24*60*60*1000;
-                        d.putLong("gap",temp);
+                        long temp = 24 * 60 * 60 * 1000;
+                        d.putLong("gap", temp);
                         break;
                     case 1:
                         //每三天
-                        LogUtil.i("autoUpdate"+"每三天");
+                        LogUtil.i("autoUpdate" + "每三天");
                         PrefsUtil dd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                        long tempp=3*24*60*60*1000;
-                        dd.putLong("gap",tempp);
+                        long tempp = 3 * 24 * 60 * 60 * 1000;
+                        dd.putLong("gap", tempp);
                         break;
                     case 2:
                         //禁止
-                        LogUtil.i("autoUpdate"+"禁止");
+                        LogUtil.i("autoUpdate" + "禁止");
                         PrefsUtil ddd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                        long temppp=99*24*60*60*1000;
-                        ddd.putLong("gap",temppp);
+                        long temppp = 99 * 24 * 60 * 60 * 1000;
+                        ddd.putLong("gap", temppp);
                         break;
 
                 }
@@ -160,5 +161,15 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
         super.onPause();
         MobclickAgent.onPageEnd("SettingActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

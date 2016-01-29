@@ -3,6 +3,7 @@ package com.liu.Account.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 
 import com.liu.Account.R;
@@ -47,5 +48,15 @@ public class SearchActivity extends AutoLayoutActivity {
         super.onPause();
         MobclickAgent.onPageEnd("SearchActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }

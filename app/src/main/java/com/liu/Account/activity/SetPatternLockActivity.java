@@ -1,6 +1,7 @@
 package com.liu.Account.activity;
 
 import android.content.Context;
+import android.view.KeyEvent;
 
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
@@ -41,5 +42,15 @@ public class SetPatternLockActivity extends me.zhanghai.android.patternlock.SetP
         super.onPause();
         MobclickAgent.onPageEnd("SetPatternLockActivity");
         MobclickAgent.onPause(this);
+    }
+    /**
+     * 返回键响应
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+        return false;
     }
 }
