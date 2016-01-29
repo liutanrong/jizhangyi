@@ -133,6 +133,11 @@ public class MainActivity extends AutoLayoutActivity
         }catch (Exception e){
             e.printStackTrace();
         }
+        try {
+            headerText.setText(users.getNickName());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (fileName==null)
             return;
         BmobProFile.getInstance(context).download(users.getHeaderIconFileName(),
@@ -142,15 +147,6 @@ public class MainActivity extends AutoLayoutActivity
                         Bitmap bitmap = BitmapUtil.getBitmapFromFile(s);
                         if (bitmap != null)
                             headerIcon.setImageBitmap(bitmap);
-                        BmobUsers userss = BmobUser.getCurrentUser(context, BmobUsers.class);
-                        String temp = null;
-                        try {
-                            temp = userss.getNickName();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        if (temp != null)
-                            headerText.setText(userss.getNickName());
                     }
 
                     @Override

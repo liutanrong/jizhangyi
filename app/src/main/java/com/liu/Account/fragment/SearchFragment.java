@@ -272,6 +272,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
         final ApplicationDatas datas= (ApplicationDatas) activity.getApplication();
         searchView=datas.getSearchView();
+        searchView.setQueryHint("搜索账单备注...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -286,6 +287,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             public boolean onQueryTextChange(String newText) {
                 LogUtil.i("2");
                 data.setSearchString(newText);
+                queryString();
                 return false;
             }
         });
