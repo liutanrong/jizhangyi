@@ -130,8 +130,6 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         }else {
             setNameAndPic();
         }
-
-
         setNameAndPic();
 
     }
@@ -144,6 +142,21 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        String temp = null;
+        String e = null;
+        try {
+            e = users.getEmail();
+            temp = users.getNickName();
+        } catch (Exception a) {
+            a.printStackTrace();
+        }
+        
+        if (temp != null)
+            nickName.setText(users.getNickName());
+        if (e != null)
+            email.setText(e);
+
         if (fileName==null)
             return;
         LogUtil.i("用户头像file名称" + fileName);
@@ -154,19 +167,6 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
                         Bitmap bitmap = BitmapUtil.getBitmapFromFile(s);
                         if (bitmap != null)
                             userIcon.setImageBitmap(bitmap);
-                        String temp = null;
-                        String e = null;
-                        try {
-                            e = users.getEmail();
-                            temp = users.getNickName();
-                        } catch (Exception a) {
-                            a.printStackTrace();
-                        }
-                        if (temp != null)
-                            nickName.setText(users.getNickName());
-                        if (e != null)
-                            email.setText(e);
-
                     }
 
                     @Override
