@@ -1,19 +1,25 @@
 package com.liu.Account.initUtils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 
+import com.liu.Account.BmobNetwork.BmobNetworkUtils;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.AppUtil;
+import com.liu.Account.commonUtils.DateUtil;
 import com.liu.Account.commonUtils.LogUtil;
+import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import java.io.File;
+import java.util.Calendar;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 
 /**
  * Created by deonte on 16-1-25.
@@ -72,5 +78,29 @@ public class Init {
     public static void Umeng(Context context) {
         MobclickAgent.openActivityDurationTrack(false);
         UmengUpdateAgent.setUpdateCheckConfig(false);
+    }
+
+    public static void autoUpdateData(Context context) {
+
+        BmobNetworkUtils bmob=new BmobNetworkUtils(context);
+        try {
+
+            PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+            long gap=d.getLong("gap",24*60*60*1000);
+            long lastUpdateTime=d.getLong("autoUpateTime", 0000000);
+            long thiss=lastUpdateTime+gap;
+
+            Calendar calendar=Calendar.getInstance();
+            long a= calendar.getTimeInMillis();
+            BmobUser user=BmobUser.getCurrentUser(context);
+            if (a>thiss) {
+                bmob.upDatesToBmob(context);
+                LogUtil.i("自动同步ing");
+            }else {
+                LogUtil.i("未自动同步");
+            }
+        }catch (Exception e){
+           e.printStackTrace();
+        }
     }
 }

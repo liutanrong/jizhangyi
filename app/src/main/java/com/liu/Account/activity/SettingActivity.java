@@ -6,13 +6,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.R;
+import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.utils.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -29,6 +32,8 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
     private TextView topText;
 
     private SwitchButton patternButton;
+
+    private Spinner updateSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,44 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
         patternButton= (SwitchButton) findViewById(R.id.settingPattern);
         patternButton.setChecked(false);
         patternButton.setOnCheckedChangeListener(this);
+
+        updateSpinner= (Spinner) findViewById(R.id.setting_update);
+        updateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LogUtil.i("autoUpdate"+position);
+                switch (position) {
+                    case 0:
+                        //每天
+                        LogUtil.i("autoUpdate"+"每天");
+                        PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+                        long temp=24*60*60*1000;
+                        d.putLong("gap",temp);
+                        break;
+                    case 1:
+                        //每三天
+                        LogUtil.i("autoUpdate"+"每三天");
+                        PrefsUtil dd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+                        long tempp=3*24*60*60*1000;
+                        dd.putLong("gap",tempp);
+                        break;
+                    case 2:
+                        //禁止
+                        LogUtil.i("autoUpdate"+"禁止");
+                        PrefsUtil ddd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+                        long temppp=99*24*60*60*1000;
+                        ddd.putLong("gap",temppp);
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 

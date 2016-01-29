@@ -19,6 +19,7 @@
             android:icon="@drawable/ic_menu_search"
             android:title="@string/menu_search" />
         <item
+            android:visible="false"
             android:id="@+id/menu_analysis"
             android:icon="@drawable/ic_menu_analysis"
             android:title="@string/menu_analysis" />

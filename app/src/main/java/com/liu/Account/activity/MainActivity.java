@@ -44,6 +44,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.Timer;
@@ -106,6 +107,7 @@ public class MainActivity extends AutoLayoutActivity
 
         get.upInfoToBmob(bundle);//上传设备信息到bmob
 
+        Init.autoUpdateData(context);
 
     }
 
@@ -247,7 +249,16 @@ public class MainActivity extends AutoLayoutActivity
             UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
                 @Override
                 public void onUpdateReturned(int i, UpdateResponse updateResponse) {
-
+                    switch (i) {
+                        case UpdateStatus.Yes:
+                            break;
+                        case UpdateStatus.No:
+                            ToastUtil.showShort(context,"暂无更新");
+                            break;
+                        case UpdateStatus.Timeout:
+                            ToastUtil.showShort(context,"超时");
+                            break;
+                    }
                     pro.dismiss();
                 }
             });

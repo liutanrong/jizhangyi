@@ -15,4 +15,6 @@
         <attr name="emojiconTextLength" format="integer" />
         <attr name="emojiconUseSystemDefault" format="boolean" />
     </declare-styleable>
+
+
 </resources>

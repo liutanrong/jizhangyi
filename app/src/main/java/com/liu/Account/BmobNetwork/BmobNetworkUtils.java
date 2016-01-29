@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,7 +18,6 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
-import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -138,7 +136,7 @@ public class BmobNetworkUtils {
                                                     print("上传成功,文件名：" + s);
                                                     pro.dismiss();
                                                     Calendar calendar = Calendar.getInstance();
-                                                    PrefsUtil d = new PrefsUtil(context, Constants.PrefsName, Context.MODE_PRIVATE);
+                                                    PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
                                                     ToastUtil.showShort(context, R.string.updateSuccess);
                                                 }
@@ -184,7 +182,7 @@ public class BmobNetworkUtils {
                                                     pro.dismiss();
                                                     ToastUtil.showShort(context, R.string.updateSuccess);
                                                     Calendar calendar = Calendar.getInstance();
-                                                    PrefsUtil d = new PrefsUtil(context, Constants.PrefsName, Context.MODE_PRIVATE);
+                                                    PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
                                                     d.putLong("autoUpateTime", calendar.getTimeInMillis());
 
                                                 }
@@ -277,34 +275,37 @@ public class BmobNetworkUtils {
                         }
                         datas.setFile(bmobFile);
                         datas.setFileName(s);
-                        datas.setType("update");
+                        datas.setType("autoUpdate");
                         datas.save(context, new SaveListener() {
                             @Override
                             public void onSuccess() {
                                 BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                i.setFileName(s);
-                                i.setDBMd5(MD5);
-                                SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                String ss = DateFormat.format(new java.util.Date());
-                                i.setDBupdateDate(ss);
-                                i.update(context, new UpdateListener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        print("上传成功,文件名：" + s);
-                                        pro.dismiss();
-                                        Calendar calendar=Calendar.getInstance();
-                                        PrefsUtil d=new PrefsUtil(context,Constants.PrefsName,Context.MODE_PRIVATE);
-                                        d.putLong("autoUpateTime", calendar.getTimeInMillis());
+                                if (i!=null) {
+                                    i.setFileName(s);
+                                    i.setDBMd5(MD5);
+                                    SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                                    String ss = DateFormat.format(new java.util.Date());
+                                    i.setDBupdateDate(ss);
+                                    i.update(context, new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            print("上传成功,文件名：" + s);
+                                            pro.dismiss();
+                                            Calendar calendar = Calendar.getInstance();
+                                            PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+                                            d.putLong("autoUpateTime", calendar.getTimeInMillis());
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onFailure(int i, String s) {
+                                        @Override
+                                        public void onFailure(int i, String s) {
 
-                                        print("上传失败 账户信息更新失败");
-                                        pro.dismiss();
-                                    }
-                                });
+                                            print("上传失败 账户信息更新失败");
+                                            pro.dismiss();
+                                        }
+                                    });
+                                }
+                                pro.dismiss();
                             }
 
                             @Override
