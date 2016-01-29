@@ -83,23 +83,17 @@ public class LaunchActivity extends ConfirmPatternActivity {
                 +Constants.column[9]+" String,"
                 +Constants.column[10]+" String )";
 
-        PrefsUtil pr=new PrefsUtil(context,"isFirst",Context.MODE_PRIVATE);
-        boolean flag=pr.getBoolean("isFirst",true);
-        pr.putBoolean("isFirst",false);
         db = new DatabaseUtil(context, Constants.DBNAME, 1);
-        if (AppUtil.getAppVersionCode(context)==17){
+        if (AppUtil.getAppVersionCode(context)==16||AppUtil.getAppVersionCode(context)==17){
             try {
                 db.renameTable("date", Constants.tableName);
             }catch (Exception e){
                 e.printStackTrace();
-                if (flag){
+
                     db.creatTables(CREATE_CLASS);
-                }
             }
         }else {
-            if (flag){
                 db.creatTables(CREATE_CLASS);
-            }
         }
     }
 

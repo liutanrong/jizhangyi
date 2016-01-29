@@ -140,6 +140,8 @@ public class ResetPatternActivity extends AutoLayoutActivity {
         mLogin_password = (EditText) findViewById(R.id.login_password);
         mLogin_login = (Button) findViewById(R.id.login_login);
         mFindPassword= (TextView) findViewById(R.id.findPassword);
+
+        AppUtil.requestFocus(mLogin_login);
     }
     @Override
     protected void onResume() {

@@ -87,6 +87,7 @@ public class RetrievePasswordActivity extends AutoLayoutActivity{
     private void bindViews() {
         mUser_name= (EditText) findViewById(R.id.retrieve_user_name);
         mRetrieve= (Button) findViewById(R.id.retrieve_password);
+        AppUtil.requestFocus(mRetrieve);
     }
 
     private void initTop() {

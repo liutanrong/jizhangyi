@@ -17,13 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-      productFlavors {
+    /**productFlavors {
 
-        xiaomi {
+            xiaomi {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
         }
 
-       /** baidu {
+       baidu {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
         }
 
@@ -39,8 +39,8 @@ android {
         }
         bmob {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "bmob"]
-        }**/
-    }
+        }
+    }**/
 }
 
 dependencies {

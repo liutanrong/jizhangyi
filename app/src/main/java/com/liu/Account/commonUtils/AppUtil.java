@@ -436,7 +436,7 @@ public class AppUtil {
             version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Log.e("AppUtils","getAppVersion");
+            Log.e("AppUtils", "getAppVersion");
         }
         Log.d("AppUtils","该应用的版本号: " + version);
         return version;
@@ -770,5 +770,9 @@ public class AppUtil {
             manager.setWifiEnabled(enabled);
 
     }
-
+    public static void requestFocus(View v){
+        v.setFocusable(true);
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+    }
 }

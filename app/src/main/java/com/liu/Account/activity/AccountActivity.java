@@ -99,10 +99,9 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         nickName= (EditText) findViewById(R.id.account_nickname);
         email= (TextView) findViewById(R.id.account_email);
 
-        email.setFocusable(true);
-        email.setFocusableInTouchMode(true);
-        email.requestFocus();
+        AppUtil.requestFocus(email);
     }
+
 
     private void initTop() {
         titleBack = (ImageView) findViewById(R.id.title_back);

@@ -72,7 +72,7 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
                 ////  16-1-26 上传数据
                 if (user!=null){
                     BmobNetworkUtils d=new BmobNetworkUtils(activity);
-                    d.upDatesToBmobWithDialog(activity);
+                    d.upDatesToBmob(activity,true);
                 }else {
                     Dialog dialog =new AlertDialog.Builder(activity)
                             .setTitle("需要登陆")
@@ -86,12 +86,11 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
                             .setNegativeButton("取消",null).create();
                     dialog.show();
                 }
-                onStart();
                 break;
             }case R.id.sync_downland:{
                 ////  16-1-26 下载数据
                 if (user!=null){
-                    BmobUsers bmobUser=BmobUser.getCurrentUser(activity,BmobUsers.class);
+                    BmobUsers bmobUser=BmobUsers.getCurrentUser(activity,BmobUsers.class);
                     if (bmobUser.getFileName()!=null){
                         BmobNetworkUtils dd=new BmobNetworkUtils(activity);
                         dd.getDatasFromBmob(activity, bmobUser.getFileName());

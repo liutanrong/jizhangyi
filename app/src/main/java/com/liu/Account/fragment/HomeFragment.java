@@ -101,6 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
         query="select * from "+ Constants.tableName+" where year_date=? and month_date=? order by unixtime desc";
         try {
             Cursor cursor = db.queryCursor(query, new String[]{"" + currentYear, "" + currentMonth});
+            LogUtil.i("当前数据库大小"+cursor.getCount());
             initArray(cursor);
             getMoneyCount(cursor);
         }catch (Exception e){

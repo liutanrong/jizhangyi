@@ -148,7 +148,7 @@ public class LookBillActivity extends AutoLayoutActivity {
                             public void run() {
                                 super.run();
                                 BmobNetworkUtils d = new BmobNetworkUtils(context);
-                                d.upDatesToBmob(context);
+                                d.upDatesToBmob(context,false);
                             }
                         };
                         thread.run();

@@ -18,12 +18,10 @@
         android:layout_width="128px"
         android:layout_height="128px"
         imagecontrol:border_outside_color="#3F51B5"
-        imagecontrol:border_thickness="2dp"
-        android:src="@drawable/iconfont_yonghu128"/>
+        imagecontrol:border_thickness="2dp"/>
     <TextView
         android:id="@+id/userName"
         android:layout_width="128px"
-        android:layout_height="wrap_content"
-        android:text="匿名用户" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -69,6 +69,7 @@ public class Init {
     }
 
     public static void autoUpdate(Context context) {
+        UmengUpdateAgent.setUpdateCheckConfig(false);
         UmengUpdateAgent.update(context);
         UmengUpdateAgent.setUpdateOnlyWifi(false);//非wifi也提醒
         UmengUpdateAgent.silentUpdate(context);//静默下载更新
@@ -77,11 +78,11 @@ public class Init {
 
     public static void Umeng(Context context) {
         MobclickAgent.openActivityDurationTrack(false);
-        UmengUpdateAgent.setUpdateCheckConfig(false);
     }
 
     public static void autoUpdateData(Context context) {
 
+        LogUtil.i("设置自动同步ing");
         BmobNetworkUtils bmob=new BmobNetworkUtils(context);
         try {
 
@@ -92,10 +93,9 @@ public class Init {
 
             Calendar calendar=Calendar.getInstance();
             long a= calendar.getTimeInMillis();
-            BmobUser user=BmobUser.getCurrentUser(context);
             if (a>thiss) {
-                bmob.upDatesToBmob(context);
                 LogUtil.i("自动同步ing");
+                bmob.upDatesToBmob(context, false);
             }else {
                 LogUtil.i("未自动同步");
             }

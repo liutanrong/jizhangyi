@@ -25,9 +25,9 @@ public class TagConstats {
     public static String OrderBySelet[]={"spendMoney","creatTime","unixTime"};
 
     //改这里的时候记得改adapter
-    public static String TagTypeShow[]={"无分类","餐饮","娱乐","购物","交通","工资","其他","全部"};
-    public static String TagTypeSelect[]={"无分类","餐饮","娱乐","购物","交通","工资","其他","全部"};
-    public static final int  TagTypePosition=7;
+    public static String TagTypeShow[]={"全部","餐饮","娱乐","购物","交通","工资","其他","无分类"};
+    public static String TagTypeSelect[]={"全部","餐饮","娱乐","购物","交通","工资","其他","无分类"};
+    public static final int  TagTypePosition=0;
 
     public static String OrderWayShow[]={"降序","升序"};
     public static String OrderWaySelect[]={"desc","asc"};

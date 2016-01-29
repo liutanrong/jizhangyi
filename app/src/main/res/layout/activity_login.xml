@@ -17,6 +17,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="350px"
                 android:scaleType="fitXY"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:src="@drawable/login_background" />
             <EditText
                 android:id="@+id/login_user_name"

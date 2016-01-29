@@ -59,6 +59,7 @@ public class LoginActivity extends AutoLayoutActivity{
             }
         });
 
+        AppUtil.requestFocus(mLogin_login);
     }
 
     private void BmobLogin(String userName, String password) {

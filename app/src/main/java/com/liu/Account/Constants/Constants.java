@@ -7,7 +7,7 @@ import com.liu.Account.commonUtils.PrefsUtil;
  */
 public class Constants {
     public static String DBNAME="UNDEFAED";
-    public static final String tableName="BillData";
+    public static final String tableName="billdata";
     public static final String[] column=
             {"_Id","spendMoney","remark","date","unixTime","creatTime","moneyType","Tag","year_date","month_date","day_year"};
     public static final String AutoUpdatePrefsName ="syncFile";

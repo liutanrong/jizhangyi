@@ -127,6 +127,7 @@ public class RegisterActivity extends AutoLayoutActivity{
         mRegister_password = (EditText) findViewById(R.id.register_password);
         mRegister_password_t = (EditText) findViewById(R.id.register_password_t);
         mRegister = (Button) findViewById(R.id.register);
+        AppUtil.requestFocus(mRegister);
     }
 
     @Override

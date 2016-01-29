@@ -41,6 +41,7 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by deonet on 2015/12/17.
@@ -48,12 +49,13 @@ import cn.bmob.v3.listener.UpdateListener;
 public class BmobNetworkUtils {
     private Context context;
     private String outPath;
-    private  String DBNAME;
     private ProgressDialog pro;
 
     private String MD5;
+
     //private static  String PackagePath=Constants.DatabasePath;
     private static String datebasePath=null;
+
     public BmobNetworkUtils(Context context){
         this.context=context;
          pro= new ProgressDialog(context);
@@ -64,268 +66,159 @@ public class BmobNetworkUtils {
         datebasePath=file.getPath();
         LogUtil.i("database路径：" + datebasePath);
     }
-    /**
-     * 上传数据到Bmob
-     * **/
-    public void upDatesToBmobWithDialog(final Context context) {
-        Map<String,String> map = new HashMap<String,String>();
-        try{
-            BmobUser user=BmobUser.getCurrentUser(context);
 
-            map.put("type",user.getObjectId()+"手动上传数据");
-        }catch (Exception e){
-            e.printStackTrace();
-            map.put("type","手动上传数据");
+    private void updateToBmobNewDatas(final String fileName, BmobFile file,
+                                      final String DBMD5, final boolean isShowToast) {
+
+        BmobNewDatas datas=new BmobNewDatas();
+        BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
+        if (user!=null){
+            datas.setAuthor(user);
+            datas.setAuthorEmail(user.getEmail());
         }
-        MobclickAgent.onEventValue(context, "UpDatas", map, 0);
+        datas.setFile(file);
+        datas.setFileName(fileName);
+        if (isShowToast){
+            datas.setType("Update");
+        }else {
 
-        pro.setTitle("正在上传");
-        pro.setMessage("请稍候...");
-        pro.show();
-        File file=new File(datebasePath);
-        MD5=getFileMD5(file);
-        BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
-
-        try {
-            if (users.getDBMd5().equals(MD5)) {
-                pro.dismiss();
-                print("MD5码与云端相同，未上传");
-                Toast.makeText(context,"同步完成",Toast.LENGTH_SHORT).show();
-                return;
+            datas.setType("autoUpdate");
+        }
+        datas.save(context, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                LogUtil.i("上传到BmobNewDatas成功");
+                updateToUsers(fileName, DBMD5,isShowToast);
             }
-        }catch (Exception e){
-            print("还没有云MD5 "+e.toString());
 
-        }
-        copyDataBase(datebasePath,outPath+Constants.DBNAME);
-        BTPFileResponse response= BmobProFile.getInstance(context)
-                .upload(outPath+Constants.DBNAME, new UploadListener() {
-                    @Override
-                    public void onSuccess(final String s, String s1, final BmobFile bmobFile) {
-
-                        final BmobNewDatas datas=new BmobNewDatas();
-                        final BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
-                        BmobQuery<BmobNewDatas> query=new BmobQuery<BmobNewDatas>();
-                        query.addWhereEqualTo("authorEmail", user.getEmail());
-                        query.findObjects(context, new FindListener<BmobNewDatas>() {
-                            @Override
-                            public void onSuccess(List<BmobNewDatas> list) {
-                                BmobNewDatas datas = new BmobNewDatas();
-                                BmobUsers user = BmobUsers.getCurrentUser(context, BmobUsers.class);
-
-                                if (list.size() > 0) {
-                                    list.get(0).getObjectId();
-
-                                    datas.setAuthor(user);
-                                    datas.setAuthorEmail(user.getEmail());
-                                    datas.setFile(bmobFile);
-                                    datas.setFileName(s);
-                                    datas.setType("update");
-                                    datas.update(context, list.get(0).getObjectId(), new UpdateListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                            i.setFileName(s);
-                                            i.setDBMd5(MD5);
-                                            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                            String ss = DateFormat.format(new java.util.Date());
-                                            i.setDBupdateDate(ss);
-                                            i.update(context, new UpdateListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    print("上传成功,文件名：" + s);
-                                                    pro.dismiss();
-                                                    Calendar calendar = Calendar.getInstance();
-                                                    PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                                                    d.putLong("autoUpateTime", calendar.getTimeInMillis());
-                                                    ToastUtil.showShort(context, R.string.updateSuccess);
-                                                }
-
-                                                @Override
-                                                public void onFailure(int i, String s) {
-
-                                                    print("上传失败 账户信息更新失败");
-                                                    Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
-                                                    pro.dismiss();
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onFailure(int i, String s) {
-                                            print("上传失败  文件信息更新失败");
-                                            ToastUtil.showShort(context, R.string.updateFailed);
-                                            pro.dismiss();
-
-                                        }
-                                    });
-
-                                } else {
-                                    datas.setAuthor(user);
-                                    datas.setAuthorEmail(user.getEmail());
-                                    datas.setFile(bmobFile);
-                                    datas.setFileName(s);
-                                    datas.setType("update");
-                                    datas.save(context, new SaveListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                            i.setFileName(s);
-                                            i.setDBMd5(MD5);
-                                            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                            String ss = DateFormat.format(new java.util.Date());
-                                            i.setDBupdateDate(ss);
-                                            i.update(context, new UpdateListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    print("上传成功,文件名：" + s);
-                                                    pro.dismiss();
-                                                    ToastUtil.showShort(context, R.string.updateSuccess);
-                                                    Calendar calendar = Calendar.getInstance();
-                                                    PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                                                    d.putLong("autoUpateTime", calendar.getTimeInMillis());
-
-                                                }
-
-                                                @Override
-                                                public void onFailure(int i, String s) {
-
-                                                    print("上传失败 账户信息更新失败");
-                                                    Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
-                                                    pro.dismiss();
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onFailure(int i, String s) {
-
-                                            print("上传失败  文件信息更新失败");
-                                            Toast.makeText(context, "同步失败\n" + s, Toast.LENGTH_SHORT).show();
-                                            pro.dismiss();
-                                        }
-                                    });
-                                }
-                            }
-
-                            @Override
-                            public void onError(int i, String s) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onProgress(int i) {
-                        print("上传中");
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-
-                        pro.dismiss();
-                        print("上传失败 文件上传失败\n" + i + " " + s);
-                        Toast.makeText(context,"同步失败\n"+s,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+            @Override
+            public void onFailure(int i, String s) {
+                if (isShowToast){
+                    pro.dismiss();
+                    ToastUtil.showShort(context,"同步失败\n"+s);
+                }
+                LogUtil.i("上传到BmobNewDatas失败：" + s);
+            }
+        });
     }
+
+    private void updateToUsers(final String fileName, final String dbmd5, final boolean isShowToast) {
+        BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
+        if (i != null) {
+            i.setFileName(fileName);
+            i.setDBMd5(MD5);
+
+
+            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+            String ss = DateFormat.format(new java.util.Date());
+
+            i.setDBupdateDate(ss);
+
+            i.update(context, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+                    LogUtil.i("上传到user表成功,文件名：" + fileName
+                            + "\n文件Md5:" + dbmd5);
+
+                    Calendar calendar = Calendar.getInstance();
+                    PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+                    d.putLong("autoUpateTime", calendar.getTimeInMillis());
+                    if (isShowToast) {
+                        pro.dismiss();
+                        ToastUtil.showShort(context,"同步完成");
+                    }
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    LogUtil.i("上传到user表失败\n"+s);
+                    if (isShowToast) {
+                        pro.dismiss();
+                        ToastUtil.showShort(context,"同步失败\n"+s);
+                    }
+                }
+            });
+        }else {
+            LogUtil.i("未登录，不在user表中进行同步");
+            pro.dismiss();
+        }
+    }
+
     /**
      * 上传数据到Bmob
+     * @param context 上下文
+     * @param isShow 是否显示通知
      * **/
-    public void upDatesToBmob(final Context context) {
+    BmobFile bmobFile;
+    public void upDatesToBmob(final Context context, final boolean isShow) {
         Map<String,String> map = new HashMap<String,String>();
         try{
-            BmobUser user=BmobUser.getCurrentUser(context);
 
-            map.put("type",user.getObjectId()+"自动上传数据");
+            BmobUser user=BmobUser.getCurrentUser(context);
+            if (isShow)
+                map.put("type",user.getObjectId()+"上传数据");
+            else
+                map.put("type",user.getObjectId()+"自动上传数据");
         }catch (Exception e){
             e.printStackTrace();
-            map.put("type", "自动上传数据");
+            if (isShow)
+                map.put("type","上传数据");
+            else
+                map.put("type","自动上传数据");
         }
-        MobclickAgent.onEventValue(context, "AutoUpDatas", map, 0);
+
+        if (isShow)
+            MobclickAgent.onEventValue(context, "UpDatas", map, 0);
+        else
+            MobclickAgent.onEventValue(context, "AutoUpDatas", map, 0);
+
+        if (isShow) {
+            pro.setTitle("正在上传");
+            pro.setMessage("请稍候...");
+            pro.show();
+        }
 
         File file=new File(datebasePath);
         MD5=getFileMD5(file);
         BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
-        print("当前数据库大小："+getFileSize(file));
+        LogUtil.i("当前数据库大小：" + getFileSize(file));
         try {
+            LogUtil.i("当前MD5："+MD5);
+            LogUtil.i("云端MD5："+users.getDBMd5());
             if (users.getDBMd5().equals(MD5)&&getFileSize(file)>20480) {
                 pro.dismiss();
                 print("MD5码与云端相同，未上传");
+                if (isShow) {
+                    ToastUtil.showShort(context, "同步完成");
+                    pro.dismiss();
+                }
                 return;
             }
         }catch (Exception e){
             print("还没有云MD5 "+e.toString());
 
         }
-        copyDataBase(datebasePath, outPath + Constants.DBNAME);
+        copyDataBase(datebasePath, outPath + Constants.DBNAME + ".db");
 
         BTPFileResponse response= BmobProFile.getInstance(context)
-                .upload(outPath+Constants.DBNAME, new UploadListener() {
+                .upload(outPath+Constants.DBNAME+".db", new UploadListener() {
                     @Override
                     public void onSuccess(final String s, String s1, final BmobFile bmobFile) {
 
-                        final BmobNewDatas datas=new BmobNewDatas();
-                        final BmobUsers user=BmobUsers.getCurrentUser(context,BmobUsers.class);
-                        if (user!=null){
-                            datas.setAuthor(user);
-                            datas.setAuthorEmail(user.getEmail());
-                        }
-                        datas.setFile(bmobFile);
-                        datas.setFileName(s);
-                        datas.setType("autoUpdate");
-                        datas.save(context, new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                BmobUsers i = BmobUser.getCurrentUser(context, BmobUsers.class);
-                                if (i!=null) {
-                                    i.setFileName(s);
-                                    i.setDBMd5(MD5);
-                                    SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                                    String ss = DateFormat.format(new java.util.Date());
-                                    i.setDBupdateDate(ss);
-                                    i.update(context, new UpdateListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            print("上传成功,文件名：" + s);
-                                            pro.dismiss();
-                                            Calendar calendar = Calendar.getInstance();
-                                            PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
-                                            d.putLong("autoUpateTime", calendar.getTimeInMillis());
-
-                                        }
-
-                                        @Override
-                                        public void onFailure(int i, String s) {
-
-                                            print("上传失败 账户信息更新失败");
-                                            pro.dismiss();
-                                        }
-                                    });
-                                }
-                                pro.dismiss();
-                            }
-
-                            @Override
-                            public void onFailure(int i, String s) {
-
-                                print("上传失败  文件信息更新失败");
-                            }
-                        });
-
+                        LogUtil.i("文件上传成功：" + isShow+" "+s);
+                        updateToBmobNewDatas(s, bmobFile, MD5, isShow);
                     }
-
                     @Override
                     public void onProgress(int i) {
                     }
 
                     @Override
                     public void onError(int i, String s) {
-
-                        pro.dismiss();
-                        print("上传失败 文件上传失败\n" + i + " " + s);
+                        if (isShow) {
+                            ToastUtil.showShort(context, "同步完成");
+                            pro.dismiss();
+                        }
+                        LogUtil.i("文件上传失败："+isShow+"  "+s);
                     }
                 });
     }
@@ -344,11 +237,14 @@ public class BmobNetworkUtils {
         pro.setTitle("正在下载");
         pro.setMessage("请稍候...");
         pro.show();
+
         File file=new File(datebasePath);
         MD5=getFileMD5(file);
-        BmobUsers users= BmobUser.getCurrentUser(context, BmobUsers.class);
+        BmobUsers users= BmobUsers.getCurrentUser(context, BmobUsers.class);
 
         try {
+            LogUtil.i("当前MD5:" + MD5);
+            LogUtil.i("云端MD5:" + users.getDBMd5());
             if (users.getDBMd5().equals(MD5)) {
                 pro.dismiss();
                 print("MD5码与云端相同，未下载");
@@ -359,9 +255,12 @@ public class BmobNetworkUtils {
             print("还没有云MD5 "+e.toString());
         }
 
+        LogUtil.i("需要下载的文件名："+fileName);
         BmobProFile.getInstance(context).download(fileName, new DownloadListener() {
             @Override
             public void onSuccess(String s) {
+                print("文件下载成功,文件路径" + s);
+                print("文件复制后,文件路径" + datebasePath);
                 copyDataBase(s, datebasePath);
                 DatabaseUtil databaseUtil=new DatabaseUtil(context,Constants.DBNAME,1);
                 try {
@@ -369,7 +268,6 @@ public class BmobNetworkUtils {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                print("文件下载成功,文件路径" + s);
                 pro.dismiss();
                 ToastUtil.showShort(context, context.getString(R.string.getDatasSuccess));
                 //  下载成功
@@ -403,6 +301,7 @@ public class BmobNetworkUtils {
             try{
                 copyDatabase(path,outPath);
             }catch (IOException e){
+                e.printStackTrace();
                 Log.i("database--->", "Error copying database from assets");
             }
 
@@ -414,6 +313,7 @@ public class BmobNetworkUtils {
             checkableDatabase=SQLiteDatabase.openDatabase(path,null,SQLiteDatabase.OPEN_READONLY);
         }catch (SQLiteException e){
             //数据库不存在，返回false
+            LogUtil.i("数据库不存在");
         }
         if (checkableDatabase!=null){
             checkableDatabase.close();
@@ -424,6 +324,12 @@ public class BmobNetworkUtils {
     //从应用程序资产中复制数据库
     //越过空使用数据库
     private void copyDatabase(String path,String outPath)throws IOException {
+        LogUtil.i("源文件:"+path);
+        LogUtil.i("目标路径:"+outPath);
+
+        LogUtil.i("源文件的MD5:"+getFileMD5(new File(path)));
+        LogUtil.i("目标路径前MD5:"+getFileMD5(new File(outPath)));
+
 
         InputStream myInput=new FileInputStream(path);
         //打开任一目录下数据库
@@ -440,10 +346,14 @@ public class BmobNetworkUtils {
         myOutput.flush();
         myOutput.close();
         myInput.close();
+
+        File file=new File(datebasePath);
+
+        LogUtil.i("当前数据库路径MD5:"+getFileMD5(file));
     }
 
     private  void print(String s){
-        Log.i("BmobUtils------>", s);
+        LogUtil.i("BmobUtils------>"+ s);
     }
     public static String getFileMD5(File file) {
         if (!file.isFile()) {

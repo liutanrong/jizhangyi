@@ -1,5 +1,6 @@
 package com.liu.Account.activity;
 
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -370,10 +371,11 @@ public class MainActivity extends AutoLayoutActivity
                 }
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
         } else {
-            finish();
             //// TODO: 16-1-27 双击退出
-            //System.exit(0);
             MobclickAgent.onKillProcess(context);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+            finish();
         }
     }
 
