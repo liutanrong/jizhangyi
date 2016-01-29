@@ -151,7 +151,7 @@ public class AccountActivity extends AutoLayoutActivity implements View.OnClickL
         } catch (Exception a) {
             a.printStackTrace();
         }
-        
+
         if (temp != null)
             nickName.setText(users.getNickName());
         if (e != null)

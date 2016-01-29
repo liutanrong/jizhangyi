@@ -65,6 +65,7 @@ public class RegisterActivity extends AutoLayoutActivity{
             return;
        }else if (password1.length()<6){
             ToastUtil.showShort(context,getString(R.string.passwordTooShort));
+            return;
         }else if (!AppUtil.isNetworkOK(context)){
             ToastUtil.showShort(context,getString(R.string.loginNetworkFalse));
             return;
