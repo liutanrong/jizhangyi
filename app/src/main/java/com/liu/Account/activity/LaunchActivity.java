@@ -86,16 +86,11 @@ public class LaunchActivity extends ConfirmPatternActivity {
                 +Constants.column[10]+" String )";
 
         db = new DatabaseUtil(context, Constants.DBNAME, 1);
-        if (AppUtil.getAppVersionCode(context)==16||AppUtil.getAppVersionCode(context)==17){
-            try {
-                db.renameTable("date", Constants.tableName);
-            }catch (Exception e){
-                e.printStackTrace();
-
-                    db.creatTables(CREATE_CLASS);
-            }
-        }else {
-                db.creatTables(CREATE_CLASS);
+        try {
+            db.renameTable("date", Constants.tableName);
+        }catch (Exception e){
+            e.printStackTrace();
+            db.creatTables(CREATE_CLASS);
         }
     }
 
