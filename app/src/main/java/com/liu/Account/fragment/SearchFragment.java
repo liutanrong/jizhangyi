@@ -36,6 +36,7 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.model.SearchData;
 import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.utils.NumberUtil;
 import com.squareup.timessquare.CalendarPickerView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -393,8 +394,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                     money = money - Float.parseFloat(spendMoney);
                 }
 
-                BigDecimal b = new BigDecimal(money);
-                money = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+                money = NumberUtil.roundHalfUp(money);
                 if (creatTime==null){
                     creatTime="---------";
                 }
@@ -404,8 +404,13 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             }
         }
         if (money!=0) {
-            DecimalFormat df = new DecimalFormat("#.00");
-            accountMoney.setText("账单金额: " + df.format(money) + "元");
+            String te=null;
+            if (money>10000||money<-10000){
+                te=NumberUtil.roundHalfUp(money/10000)+"万";
+            }else {
+                te=NumberUtil.roundHalfUp(money)+"元";
+            }
+            accountMoney.setText("账单金额: " + te);
         }
         databaseUtil.close();
         adapter.notifyDataSetChanged();

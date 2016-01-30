@@ -285,8 +285,15 @@ public class MainActivity extends AutoLayoutActivity
         if (null == fragments[num]) {
             fragments[num] = FragmentFactory.createFragment(num);
         }
-        if (num==FragmentFactory.SEARCH)
+        if (num==FragmentFactory.SEARCH) {
             searchItem.setVisible(true);
+        }else {
+            try {
+                searchItem.setVisible(false);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         getFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, fragments[num]).commit();
 

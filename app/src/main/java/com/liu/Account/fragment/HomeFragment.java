@@ -126,10 +126,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Adapt
             _moneyAll=_moneyIn-_moneyOut;
         } while (cursor.moveToNext());
 
+        if (_moneyIn>10000||_moneyIn<-10000){
+            String temp=String.valueOf(NumberUtil.roundHalfUp(_moneyIn / 10000));
+            moneyIn.setText(temp+"万");
+        }else {
+            moneyIn.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyIn)));
+        }
 
-        moneyIn.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyIn)));
-        moneyOut.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyOut)));
-        moneyAll.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyAll)));
+        if (_moneyOut>10000||_moneyOut<-10000){
+            String s=String.valueOf(NumberUtil.roundHalfUp(_moneyOut/10000));
+            moneyOut.setText(s+"万");
+        }else {
+            moneyOut.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyOut)));
+        }
+
+        if (_moneyAll>10000||_moneyAll<-10000){
+            String ss=String.valueOf(NumberUtil.roundHalfUp(_moneyAll/10000));
+            moneyAll.setText(ss+"万");
+        }else {
+
+            moneyAll.setText(String.valueOf(NumberUtil.roundHalfUp(_moneyAll)));
+        }
         LogUtil.i("收入:" + _moneyIn + "\n支出：" + _moneyOut + "\n总计:" + _moneyAll);
     }
 

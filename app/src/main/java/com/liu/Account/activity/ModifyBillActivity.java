@@ -356,7 +356,6 @@ public class ModifyBillActivity extends AutoLayoutActivity {
             }
         };
         thread.run();
-        this.startActivity(new Intent(context,MainActivity.class));
         finish();
     }
     @Override

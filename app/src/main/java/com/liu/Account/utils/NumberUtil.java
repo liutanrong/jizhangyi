@@ -11,7 +11,7 @@ public class NumberUtil {
     public static float roundHalfUp(float f){
         float count;
         BigDecimal b = new BigDecimal(f);
-        count = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+        count = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
         return count;
     }
     public static float roundHalfUp(String f){
@@ -21,7 +21,7 @@ public class NumberUtil {
             return -1;
         }
         BigDecimal b = new BigDecimal(f);
-        count = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+        count = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
         return count;
     }
 }

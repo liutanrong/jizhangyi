@@ -23,6 +23,7 @@ import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.AllBillListGroupData;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.utils.NumberUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.math.BigDecimal;
@@ -185,21 +186,39 @@ public class AllBillFragment extends Fragment implements ExpandableListView.OnCh
             System.out.println(e.toString());
         }
         allCount = OutCount - InCount;
-        BigDecimal a = new BigDecimal(OutCount);
-        OutCount = a.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-        BigDecimal b = new BigDecimal(InCount);
-        InCount = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-        BigDecimal d = new BigDecimal(allCount);
-        allCount = d.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 
-        count[2]= String.valueOf(OutCount);
-        count[3]= String.valueOf(InCount);
+
+        OutCount=NumberUtil.roundHalfUp(OutCount);
+        allCount=NumberUtil.roundHalfUp(allCount);
+
+        if (allCount>10000){
+            allCount= NumberUtil.roundHalfUp(allCount/10000);
+            count[0] = String.valueOf(allCount)+"万";
+        }else {
+            allCount= NumberUtil.roundHalfUp(allCount);
+            count[0] = String.valueOf(allCount);
+        }
+
+        if (OutCount>10000){
+            OutCount= NumberUtil.roundHalfUp(OutCount/10000);
+            count[2] = String.valueOf(OutCount)+"万";
+        }else {
+            OutCount= NumberUtil.roundHalfUp(OutCount);
+            count[2]= String.valueOf(OutCount);
+        }
+
+        if (InCount>10000){
+            InCount= NumberUtil.roundHalfUp(InCount/10000);
+            count[3] = String.valueOf(InCount)+"万";
+        }else {
+            InCount= NumberUtil.roundHalfUp(InCount);
+            count[3]= String.valueOf(InCount);
+        }
+
         if (allCount > 0){
             count[1] = getString(R.string.MoneyOut);
-            count[0] = String.valueOf(allCount);
         }else {
             count[1]=getString(R.string.MoneyIn);
-            count[0] = String.valueOf(Math.abs(allCount));
         }
 
         return count;
