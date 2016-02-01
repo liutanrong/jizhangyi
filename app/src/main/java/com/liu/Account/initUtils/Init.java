@@ -82,6 +82,12 @@ public class Init {
 
     public static void autoUpdateData(Context context) {
 
+        PrefsUtil d=new PrefsUtil(context,Constants.AutoUpdatePrefsName,Context.MODE_PRIVATE);
+        boolean flag=d.getBoolean("autoUpdateInFirst",false);
+        if (!flag){
+            d.putBoolean("autoUpdateInFirst",true);
+            return;
+        }
         LogUtil.i("设置自动同步ing");
         BmobNetworkUtils bmob=new BmobNetworkUtils(context);
         try {

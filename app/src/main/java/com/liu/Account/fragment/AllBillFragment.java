@@ -186,7 +186,7 @@ public class AllBillFragment extends Fragment implements ExpandableListView.OnCh
             System.out.println(e.toString());
         }
         allCount = OutCount - InCount;
-
+        allCount=Math.abs(allCount);
 
         OutCount=NumberUtil.roundHalfUp(OutCount);
         allCount=NumberUtil.roundHalfUp(allCount);
