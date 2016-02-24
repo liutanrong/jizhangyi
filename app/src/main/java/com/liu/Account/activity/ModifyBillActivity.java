@@ -343,7 +343,7 @@ public class ModifyBillActivity extends AutoLayoutActivity {
             e.printStackTrace();
             map.put("type","修改账单");
         }
-        MobclickAgent.onEventValue(context, "delAccount", map, 0);
+        MobclickAgent.onEventValue(context, "modefiAccount", map, 0);
 
 
 

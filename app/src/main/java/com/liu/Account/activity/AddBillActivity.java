@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -276,6 +277,7 @@ public class AddBillActivity extends AutoLayoutActivity {
         LogUtil.i(log);
         //{"_Id","spendMoney","remark","date","unixTime","creatTime","moneyType","Tag","year_date","month_date","day_year"};
         ////  16-1-25 写入数据库
+
         ContentValues cv=new ContentValues();
         cv.put(Constants.column[1],data.getMoney());
         cv.put(Constants.column[2],data.getRemark());
@@ -289,14 +291,34 @@ public class AddBillActivity extends AutoLayoutActivity {
         cv.put(Constants.column[10], data.getDayOfMonth());
         db.insert(Constants.tableName, cv);
         ////  16-1-25 添加账单 统计数据
+        String logg=
+                " 发生时间:"+data.getDate()+
+                        " 账单类型:"+data.getType()+
+                        " 账单标签:"+data.getTag() +
+                        " 账单金额:"+data.getMoney()+
+                        " 账单备注:"+data.getRemark();
+        Log.i("上传字节数:", "" + logg.getBytes().length);
+        LogUtil.i("上传字节数:" + logg.getBytes().length);
+        if (logg.getBytes().length>200){
+            Map<String,String> mapP = new HashMap<String,String>();
+            try{
+                BmobUser users=BmobUser.getCurrentUser(context);
+
+                mapP.put("type",users.getObjectId()+"  新增  (字节超过200)");
+            }catch (Exception e){
+                e.printStackTrace();
+                mapP.put("type","  新增  (字节超过200)");
+            }
+            MobclickAgent.onEventValue(context, "addAccountBig", mapP, 0);
+        }
         Map<String,String> map = new HashMap<String,String>();
         try{
             BmobUser user=BmobUser.getCurrentUser(context);
 
-            map.put("type",user.getObjectId()+"\t新增\t"+log);
+            map.put("type",user.getObjectId()+"  新增  "+logg);
         }catch (Exception e){
             e.printStackTrace();
-            map.put("type","新增\t"+log);
+            map.put("type","新增  "+logg);
         }
         MobclickAgent.onEventValue(context, "addAccount", map, 0);
 
