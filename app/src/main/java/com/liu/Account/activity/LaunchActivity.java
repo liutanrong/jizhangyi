@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.liu.Account.Constants.Constants;
+import com.liu.Account.Constants.TagConstats;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.AppUtil;
 import com.liu.Account.commonUtils.LogUtil;
@@ -68,6 +69,10 @@ public class LaunchActivity extends ConfirmPatternActivity {
         Init.savePath();
         Init.Umeng(context);
         initDB();
+
+        //默认Tag
+        PrefsUtil dddd=new PrefsUtil(context,Constants.DefaultTag,Context.MODE_PRIVATE);
+        TagConstats.defaultTag=dddd.getInt("tagPos",1);
     }
 
     private void initDB() {

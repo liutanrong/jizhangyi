@@ -5,7 +5,6 @@ import android.os.Build;
 import android.view.WindowManager;
 
 import com.liu.Account.R;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
  * 设置状态栏的工具类
@@ -22,8 +21,12 @@ public class StatusBarUtil {
         // TODO: 16-1-23 设置沉浸状态栏     //
         //判断当前SDK版本号，如果是4.4以上，就是支持沉浸式状态栏的
         /**if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager;
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            tintManager=new SystemBarTintManager(activity);
+            tintManager.setStatusBarTintColor(R.color.colorPrimary);
+            tintManager.setStatusBarTintEnabled(true);
         }**/
      }
 

@@ -12,7 +12,7 @@ public class TagConstats {
             R.drawable.tag_play,R.drawable.tag_shop,R.drawable.tag_traffic,
             R.drawable.tag_wage,R.drawable.tag_others};
     //上面数组中的一个
-    public static final int defaultTag=1;
+    public static  int defaultTag=1;
 
 
 

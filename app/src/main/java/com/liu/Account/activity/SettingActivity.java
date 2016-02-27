@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.liu.Account.Constants.Constants;
+import com.liu.Account.Constants.TagConstats;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
@@ -35,6 +36,7 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
     private SwitchButton patternButton;
 
     private Spinner updateSpinner;
+    private Spinner defaultTagSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
                         PrefsUtil d = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
                         long temp = 24 * 60 * 60 * 1000;
                         d.putLong("gap", temp);
+                        d.putInt("gapNumber", 0);
                         break;
                     case 1:
                         //每三天
@@ -69,6 +72,7 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
                         PrefsUtil dd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
                         long tempp = 3 * 24 * 60 * 60 * 1000;
                         dd.putLong("gap", tempp);
+                        dd.putInt("gapNumber", 1);
                         break;
                     case 2:
                         //禁止
@@ -76,6 +80,7 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
                         PrefsUtil ddd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
                         long temppp = 99 * 24 * 60 * 60 * 1000;
                         ddd.putLong("gap", temppp);
+                        ddd.putInt("gapNumber", 2);
                         break;
 
                 }
@@ -88,14 +93,82 @@ public class SettingActivity extends AutoLayoutActivity implements CompoundButto
             }
         });
 
+
+        defaultTagSpinner= (Spinner) findViewById(R.id.setting_defaultTag);
+        defaultTagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                PrefsUtil d = new PrefsUtil(context, Constants.DefaultTag, Context.MODE_PRIVATE);
+                TagConstats.defaultTag=position;
+                switch (position) {
+                    case 0:
+                        //无分类
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 1:
+                        //餐饮
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 2:
+                        //娱乐
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 3:
+                        //购物
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 4:
+                        //交通
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 5:
+                        //工资
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                    case 6:
+                        //其他
+                        LogUtil.i("defaultTag:" + TagConstats.tagList[position]);
+                        d.putString("tagName", TagConstats.tagList[position]);
+                        d.putInt("tagPos",position);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         PrefsUtil d=new PrefsUtil(context, Constants.PatternLock,Context.MODE_PRIVATE);
-        boolean isPatternOn=d.getBoolean("isPatternOn",false);
+        boolean isPatternOn=d.getBoolean("isPatternOn", false);
         patternButton.setChecked(isPatternOn);
+
+        //初始化更新频率的spinner
+        PrefsUtil ddd = new PrefsUtil(context, Constants.AutoUpdatePrefsName, Context.MODE_PRIVATE);
+        updateSpinner.setSelection(ddd.getInt("gapNumber",0),true);
+
+        //初始化默认Tag的spinner
+        PrefsUtil dddd=new PrefsUtil(context,Constants.DefaultTag,Context.MODE_PRIVATE);
+        TagConstats.defaultTag=dddd.getInt("tagPos",1);
+        defaultTagSpinner.setSelection(TagConstats.defaultTag);
     }
 
     private void initTop() {

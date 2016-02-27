@@ -53,11 +53,10 @@ public class LookBillActivity extends AutoLayoutActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setTransparentStatusBar(this);
         setContentView(R.layout.activity_look_bill);
 
         context=LookBillActivity.this;
-        //StatusBarUtil.setTransparentStatusBar(this);
+        StatusBarUtil.setTransparentStatusBar(this);
         initTop();
         bindViews();
         db=new DatabaseUtil(context, Constants.DBNAME,1);
