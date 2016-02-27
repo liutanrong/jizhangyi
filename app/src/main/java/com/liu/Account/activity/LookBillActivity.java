@@ -20,6 +20,7 @@ import com.liu.Account.commonUtils.DateUtil;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.initUtils.Init;
+import com.liu.Account.initUtils.StatusBarUtil;
 import com.liu.Account.utils.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
@@ -52,9 +53,11 @@ public class LookBillActivity extends AutoLayoutActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setTransparentStatusBar(this);
         setContentView(R.layout.activity_look_bill);
 
         context=LookBillActivity.this;
+        //StatusBarUtil.setTransparentStatusBar(this);
         initTop();
         bindViews();
         db=new DatabaseUtil(context, Constants.DBNAME,1);

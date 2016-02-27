@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bmob.BTPFileResponse;
@@ -18,6 +19,7 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
+import com.liu.Account.fragment.SyncFragment;
 import com.liu.Account.utils.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -42,7 +44,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-
+import com.liu.Account.fragment.SyncFragment;
 /**
  * Created by deonet on 2015/12/17.
  */
@@ -126,6 +128,7 @@ public class BmobNetworkUtils {
                     if (isShowToast) {
                         pro.dismiss();
                         ToastUtil.showShort(context,"同步完成");
+
                     }
                 }
 

@@ -51,7 +51,6 @@ public class AllBillFragment extends Fragment implements ExpandableListView.OnCh
         adapter = new AllBillListAdapter(activity,groupDatas);
         listView.setAdapter(adapter);
         listView.setOnChildClickListener(this);
-
         return view;
     }
 
@@ -59,6 +58,12 @@ public class AllBillFragment extends Fragment implements ExpandableListView.OnCh
     public void onStart() {
         super.onStart();
         initArray();
+        try{
+
+            listView.expandGroup(0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initArray() {

@@ -27,6 +27,7 @@ import cn.bmob.v3.BmobUser;
  * Created by deonte on 16-1-23.
  */
 public class SyncFragment extends Fragment implements View.OnClickListener {
+
     View view;
     private Activity activity;
     private TextView lastUpdateTime;
@@ -52,6 +53,7 @@ public class SyncFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
 
     @Override
     public void onStart() {

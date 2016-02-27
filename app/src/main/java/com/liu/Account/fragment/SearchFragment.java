@@ -83,6 +83,19 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
         activity=getActivity();
         initView();
+
+        data=new SearchData();
+        Calendar calendar=Calendar.getInstance();
+        data.setStartTime(String.valueOf(DateUtil.getFirstDayOfMonth()));
+        data.setEndTime(String.valueOf(calendar.getTimeInMillis()));
+
+        String temp=DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMDD)
+                +"——"+DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMDD);
+        time.setText(temp);
+        LogUtil.i("startTime" +DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMD) );
+        LogUtil.i("endTime" + DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMDD));
+
+
         return view;
     }
 
@@ -138,7 +151,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                                 LogUtil.i("startTime:" + st);
                                 LogUtil.i("endTime:" + calendar.getTimeInMillis());
                                 String temp=DateUtil.getStringByFormat(st, DateUtil.dateFormatYMDD)
-                                        +"——"+DateUtil.getStringByFormat(en, DateUtil.dateFormatYMD);
+                                        +"——"+DateUtil.getStringByFormat(en, DateUtil.dateFormatYMDD);
                                 time.setText(temp);
                                 data.setStartTime(String.valueOf(st));
                                 data.setEndTime(String.valueOf(calendar.getTimeInMillis()));
@@ -259,17 +272,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     public void onStart() {
         super.onStart();
 
-        data=new SearchData();
-        Calendar calendar=Calendar.getInstance();
-        data.setStartTime(String.valueOf(DateUtil.getFirstDayOfMonth()));
-        data.setEndTime(String.valueOf(calendar.getTimeInMillis()));
-
-        String temp=DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMDD)
-                +"——"+DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMD);
-        time.setText(temp);
-        LogUtil.i("startTime" +DateUtil.getStringByFormat(DateUtil.getFirstDayOfMonth(), DateUtil.dateFormatYMD) );
-        LogUtil.i("endTime"+DateUtil.getStringByFormat(calendar.getTimeInMillis(), DateUtil.dateFormatYMD));
-
 
         final ApplicationDatas datas= (ApplicationDatas) activity.getApplication();
         searchView=datas.getSearchView();
@@ -292,6 +294,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 return false;
             }
         });
+        queryString();
     }
 
     @Override
