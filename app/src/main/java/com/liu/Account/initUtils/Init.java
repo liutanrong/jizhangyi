@@ -78,6 +78,7 @@ public class Init {
 
     public static void Umeng(Context context) {
         MobclickAgent.openActivityDurationTrack(false);
+
     }
 
     public static void autoUpdateData(Context context) {
