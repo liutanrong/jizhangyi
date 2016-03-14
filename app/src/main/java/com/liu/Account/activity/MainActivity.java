@@ -1,10 +1,8 @@
 package com.liu.Account.activity;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -35,18 +33,16 @@ import com.bmob.btp.callback.DownloadListener;
 import com.liu.Account.BmobRespose.BmobUsers;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.Database.DatabaseUtil;
-import com.liu.Account.Database.billdate;
+import com.liu.Account.Database.Billdate;
 import com.liu.Account.R;
 import com.liu.Account.application.ApplicationDatas;
 import com.liu.Account.commonUtils.LogUtil;
-import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
 import com.liu.Account.fragment.FragmentFactory;
 import com.liu.Account.initUtils.DeviceInformation;
 import com.liu.Account.initUtils.StatusBarUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.utils.BitmapUtil;
-import com.liu.Account.utils.GetPathFromUri;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -59,7 +55,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -409,68 +404,4 @@ public class MainActivity extends AutoLayoutActivity
         MobclickAgent.onPause(this);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LogUtil.i("activityResult1:" + requestCode + "  " + resultCode);
-        if (!(resultCode== Activity.RESULT_OK)){
-            Log.i("activity","选取失败");
-            return;
-        }
-        switch (requestCode){
-            case 100:
-                //选取文件
-                new Thread(){
-                    @Override
-                    public void run() {
-                        super.run();
-                        DatabaseUtil db=new DatabaseUtil(context,Constants.DBNAME,1);
-                        db.exportFromList(csvToList(data));
-                    }
-                }.run();
-                break;
-        }
-    }
-    private List<billdate> csvToList(Intent data) {
-        Uri uri=data.getData();
-        File file=new File(uri.getPath());
-        List<billdate> list=new ArrayList<billdate>();
-        try {
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            // 读取直到最后一行
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                // 把一行数据分割成多个字段
-                StringTokenizer st = new StringTokenizer(line, ",");
-                String[] colums=line.split(",");
-                if (colums.length!=11){
-                    LogUtil.d("此行为坏行 跳过");
-                    continue;
-                }
-                billdate bt =new billdate();
-                bt.setSpendMoney(colums[1]);
-                bt.setRemark(colums[2]);
-                bt.setDate(colums[3]);
-                bt.setUnixTime(colums[4]);
-                bt.setCreatTime(colums[5]);
-                bt.setMoneyType(colums[6]);
-                bt.setTag(colums[7]);
-                bt.setYear_date(colums[8]);
-                bt.setMonth_date(colums[9]);
-                bt.setDay_year(colums[10]);
-                list.add(bt);
-                LogUtil.i("账单id:"+colums[0]+"账单备注:"+colums[2]);
-            }
-            br.close();
-
-        } catch (FileNotFoundException e) {
-            // 捕获File对象生成时的异常
-            e.printStackTrace();
-        } catch (IOException e) {
-            // 捕获BufferedReader对象关闭时的异常
-            e.printStackTrace();
-        }
-        return list;
-    }
 }

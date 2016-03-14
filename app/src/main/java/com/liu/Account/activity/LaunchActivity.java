@@ -11,12 +11,15 @@ import android.view.WindowManager;
 
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.Constants.TagConstats;
+import com.liu.Account.Database.CopyDatabaseUtils;
 import com.liu.Account.R;
+import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.initUtils.Init;
 import com.liu.Account.Database.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.IOException;
 import java.util.List;
 
 import me.zhanghai.android.patternlock.ConfirmPatternActivity;
@@ -65,10 +68,24 @@ public class LaunchActivity extends ConfirmPatternActivity {
         Init.savePath();
         Init.Umeng(context);
         initDB();
-
+        initTag();
         //默认Tag
         PrefsUtil dddd=new PrefsUtil(context,Constants.DefaultTag,Context.MODE_PRIVATE);
         TagConstats.defaultTag=dddd.getInt("tagPos",1);
+    }
+
+    private void initTag() {
+        String temp=Init.DatabasePath(context, Constants.DBNAME);
+        String dbPath=temp.substring(0,temp.length()-Constants.DBNAME.length());
+
+        CopyDatabaseUtils cp=new CopyDatabaseUtils(context,Constants.TagDBName,"tag",dbPath);
+        try {
+            cp.copyDataBase();
+            LogUtil.i("标签数据库拷贝成功");
+        } catch (IOException e) {
+            LogUtil.i("标签数据库拷贝失败");
+        }
+        
     }
 
     private void initDB() {
@@ -93,6 +110,7 @@ public class LaunchActivity extends ConfirmPatternActivity {
             e.printStackTrace();
             db.creatTables(CREATE_CLASS);
         }
+
     }
 
 

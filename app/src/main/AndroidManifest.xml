@@ -108,7 +108,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".activity.DoWithCSVActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
 
+        </activity>
 
         <!--友盟服务-->
         <service

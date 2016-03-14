@@ -80,13 +80,7 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
         emojisPager.setAdapter(mEmojisAdapter);
 
         mEmojiTabs = new View[6];
-        mEmojiTabs[0] = view.findViewById(R.id.emojis_tab_0_recents);
-        mEmojiTabs[1] = view.findViewById(R.id.emojis_tab_1_people);
-        mEmojiTabs[2] = view.findViewById(R.id.emojis_tab_2_nature);
-        mEmojiTabs[3] = view.findViewById(R.id.emojis_tab_3_objects);
-        mEmojiTabs[4] = view.findViewById(R.id.emojis_tab_4_cars);
-        mEmojiTabs[5] = view.findViewById(R.id.emojis_tab_5_punctuation);
-        for (int i = 0; i < mEmojiTabs.length; i++) {
+       for (int i = 0; i < mEmojiTabs.length; i++) {
             final int position = i;
             mEmojiTabs[i].setOnClickListener(new View.OnClickListener() {
                 @Override

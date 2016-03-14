@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.LogUtil;
-import com.liu.Account.commonUtils.ToastUtil;
-import com.liu.Account.utils.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,15 +140,15 @@ public class DatabaseUtil {
      * 查询数据库中的用户
      * @return
      */
-    public List<billdate> exportToList() {
+    public List<Billdate> exportToList() {
         String sql = "select * from billdata";
         Cursor cursor = this.queryCursor(sql,null);
 
-        List<billdate> list = new ArrayList<billdate>();
+        List<Billdate> list = new ArrayList<Billdate>();
 
       //  ToastUtil.showShort(activity, "导出CSV文件");
         while(cursor.moveToNext()){
-            billdate user = new billdate();
+            Billdate user = new Billdate();
             String id=String.valueOf(cursor.getInt(cursor.getColumnIndex("_Id")));
             String remark = cursor.getString(cursor.getColumnIndex("remark"));
             String date = cursor.getString(cursor.getColumnIndex("date"));
@@ -180,7 +178,7 @@ public class DatabaseUtil {
         writeableDatabase.close();
         return list;
     }
-    public void insert(billdate bt){
+    public void insert(Billdate bt){
 
 
     //{"_Id","spendMoney","remark","date","unixTime","creatTime",
@@ -199,8 +197,8 @@ public class DatabaseUtil {
         cv.put(Constants.column[10],bt.getDay_year());
         insert(Constants.tableName, cv);
     }
-    public void exportFromList(List<billdate> list){
-        for(billdate u:list){
+    public void exportFromList(List<Billdate> list){
+        for(Billdate u:list){
             insert(u);
 
         }
