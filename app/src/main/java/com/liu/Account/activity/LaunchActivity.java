@@ -1,6 +1,5 @@
 package com.liu.Account.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +12,10 @@ import android.view.WindowManager;
 import com.liu.Account.Constants.Constants;
 import com.liu.Account.Constants.TagConstats;
 import com.liu.Account.R;
-import com.liu.Account.commonUtils.AppUtil;
-import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.initUtils.Init;
-import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.Database.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
-import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.List;
 

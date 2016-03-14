@@ -1,11 +1,17 @@
-package com.liu.Account.utils;
+package com.liu.Account.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.liu.Account.Constants.Constants;
 import com.liu.Account.commonUtils.LogUtil;
+import com.liu.Account.commonUtils.ToastUtil;
+import com.liu.Account.utils.SQLiteHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by deonte on 16-1-25.
@@ -132,4 +138,72 @@ public class DatabaseUtil {
         writeableDatabase.execSQL(sql);
     }
 
+    /**
+     * 查询数据库中的用户
+     * @return
+     */
+    public List<billdate> exportToList() {
+        String sql = "select * from billdata";
+        Cursor cursor = this.queryCursor(sql,null);
+
+        List<billdate> list = new ArrayList<billdate>();
+
+      //  ToastUtil.showShort(activity, "导出CSV文件");
+        while(cursor.moveToNext()){
+            billdate user = new billdate();
+            String id=String.valueOf(cursor.getInt(cursor.getColumnIndex("_Id")));
+            String remark = cursor.getString(cursor.getColumnIndex("remark"));
+            String date = cursor.getString(cursor.getColumnIndex("date"));
+            String unixtime = cursor.getString(cursor.getColumnIndex("unixTime"));
+            String spendMoney = cursor.getString(cursor.getColumnIndex("spendMoney"));
+            String moneyType=cursor.getString(cursor.getColumnIndex("moneyType"));
+            String creatTime=cursor.getString(cursor.getColumnIndex("creatTime"));
+            String tag=cursor.getString(cursor.getColumnIndex("Tag"));
+            String year_date=cursor.getString(cursor.getColumnIndex("year_date"));
+            String month_date=cursor.getString(cursor.getColumnIndex("month_date"));
+            String day_year=cursor.getString(cursor.getColumnIndex("day_year"));
+
+            user.set_Id(id);
+            user.setCreatTime(creatTime);
+            user.setDate(date);
+            user.setRemark(remark);
+            user.setDay_year(day_year);
+            user.setMoneyType(moneyType);
+            user.setYear_date(year_date);
+            user.setUnixTime(unixtime);
+            user.setSpendMoney(spendMoney);
+            user.setTag(tag);
+            user.setMonth_date(month_date);
+            list.add(user);
+        }
+        cursor.close();
+        writeableDatabase.close();
+        return list;
+    }
+    public void insert(billdate bt){
+
+
+    //{"_Id","spendMoney","remark","date","unixTime","creatTime",
+    // "moneyType","Tag","year_date","month_date","day_year"};
+
+        ContentValues cv=new ContentValues();
+        cv.put(Constants.column[1],bt.getSpendMoney());
+        cv.put(Constants.column[2],bt.getRemark());
+        cv.put(Constants.column[3],bt.getDate());
+        cv.put(Constants.column[4],bt.getUnixTime());
+        cv.put(Constants.column[5],bt.getCreatTime());
+        cv.put(Constants.column[6],bt.getMoneyType());
+        cv.put(Constants.column[7],bt.getTag());
+        cv.put(Constants.column[8],bt.getYear_date());
+        cv.put(Constants.column[9],bt.getMonth_date());
+        cv.put(Constants.column[10],bt.getDay_year());
+        insert(Constants.tableName, cv);
+    }
+    public void exportFromList(List<billdate> list){
+        for(billdate u:list){
+            insert(u);
+
+        }
+
+    }
 }

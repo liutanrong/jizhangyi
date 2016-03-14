@@ -1,6 +1,5 @@
 package com.liu.Account.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -19,9 +18,8 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.DateUtil;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.ToastUtil;
-import com.liu.Account.initUtils.Init;
 import com.liu.Account.initUtils.StatusBarUtil;
-import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.Database.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 

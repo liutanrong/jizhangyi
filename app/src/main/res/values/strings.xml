@@ -68,6 +68,8 @@
     <string name="sync_last">上次同步时间</string>
     <string name="sync_update">上传数据</string>
     <string name="sync_downland">下载数据</string>
+    <string name="sync2csv">导出到CSV文件</string>
+    <string name="csv2t">导入CSV文件</string>
     <string name="updateSuccess">上传成功</string>
     <string name="updateFailed">上传失败</string>
     <string name="getDatasFailed">数据下载失败</string>

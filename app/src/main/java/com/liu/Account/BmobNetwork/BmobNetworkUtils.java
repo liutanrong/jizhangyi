@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.bmob.BTPFileResponse;
@@ -19,8 +18,7 @@ import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
 import com.liu.Account.commonUtils.ToastUtil;
-import com.liu.Account.fragment.SyncFragment;
-import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.Database.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -34,17 +32,13 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
-import com.liu.Account.fragment.SyncFragment;
+
 /**
  * Created by deonet on 2015/12/17.
  */

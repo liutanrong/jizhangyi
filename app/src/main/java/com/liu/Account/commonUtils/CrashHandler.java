@@ -17,11 +17,13 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import com.liu.Account.Constants.Constants;
+
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private static final boolean DEBUG = true;
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getPath() + "/CrashTest/log/";
+    private static final String PATH = Environment.getExternalStorageDirectory().getPath() + Constants.FileName+"log/";
     private static final String FILE_NAME = "crash";
 
     //log文件的后缀名

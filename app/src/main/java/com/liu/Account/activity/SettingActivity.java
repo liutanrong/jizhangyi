@@ -19,7 +19,6 @@ import com.liu.Account.Constants.TagConstats;
 import com.liu.Account.R;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.commonUtils.PrefsUtil;
-import com.liu.Account.utils.DatabaseUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLayoutActivity;
 

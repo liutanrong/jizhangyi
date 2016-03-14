@@ -55,6 +55,26 @@
         android:background="@drawable/selector_btn_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/sync2csv"
+        android:text="@string/sync2csv"
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:textColor="@drawable/selector_btn_text"
+        android:background="@drawable/selector_btn_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/csv2t"
+        android:text="@string/csv2t"
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:textColor="@drawable/selector_btn_text"
+        android:background="@drawable/selector_btn_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

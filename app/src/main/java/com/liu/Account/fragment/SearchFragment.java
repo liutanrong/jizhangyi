@@ -3,7 +3,6 @@ package com.liu.Account.fragment;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,17 +33,14 @@ import com.liu.Account.commonUtils.DateUtil;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.HomeListViewData;
 import com.liu.Account.model.SearchData;
-import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.Database.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
 import com.squareup.timessquare.CalendarPickerView;
 import com.umeng.analytics.MobclickAgent;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**

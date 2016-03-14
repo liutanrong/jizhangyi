@@ -2,12 +2,10 @@ package com.liu.Account.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +20,10 @@ import com.liu.Account.adapter.AllBillListAdapter;
 import com.liu.Account.commonUtils.LogUtil;
 import com.liu.Account.model.AllBillListGroupData;
 import com.liu.Account.model.HomeListViewData;
-import com.liu.Account.utils.DatabaseUtil;
+import com.liu.Account.Database.DatabaseUtil;
 import com.liu.Account.utils.NumberUtil;
 import com.umeng.analytics.MobclickAgent;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
